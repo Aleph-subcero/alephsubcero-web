@@ -3,156 +3,725 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aleph Subcero</title>
-<meta name="description" content="Aleph Subcero crea apps de salud y bienestar que ayudan a las personas a cuidarse y a cuidar a quienes quieren. Creadores de 3Gly y Aby2.">
+<meta name="description" content="Aleph Subcero crea apps que te acompañan cuando cuidarte, o cuidar a alguien que quieres, se pone cuesta arriba. Creadores de 3Gly y Aby2.">
+<meta property="og:title" content="Aleph Subcero">
+<meta property="og:description" content="Lo difícil se sostiene un día a la vez. Creadores de 3Gly y Aby2.">
+<meta property="og:image" content="https://alephsubcero.com/img/piramide-cristal.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='60 92 262 206'%3E%3Cpath d='M66 98 L150 98 L263 288 L207 288 Z' fill='%23B5452F'/%3E%3Cpath d='M207 98 L263 98 C255 128 236 162 207 186 C224 158 224 126 207 98 Z' fill='%23B5452F'/%3E%3Cpath d='M152 200 C118 220 78 252 66 288 L122 288 C106 262 110 228 152 200 Z' fill='%23B5452F'/%3E%3Cellipse cx='294' cy='258' rx='12' ry='28' stroke='%23B5452F' stroke-width='7' fill='none'/%3E%3C/svg%3E">
+<title>Aleph Subcero</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-html{scroll-behavior:smooth}
-body{margin:0;background:#FAF8F5;font-family:'Manrope',system-ui,sans-serif;color:#111111}
-a{color:#111111}a:hover{color:#B5452F}
+/* Layout: casa clara como alephsubcero.com; bandas oscuras de cristal para los momentos grandes; cada app con su propia paleta */
+:root{
+  --bg:#FAF8F5; --surface:#F2EDE7; --card:#FFFFFF; --ink:#151312; --muted:#5E5650; --line:#E4DDD5;
+  --accent:#B5452F; --accent-ink:#FFFFFF;
+  --night:#050607; --night-fg:#F3F1EE; --night-muted:#A9ADB3;
+  --gly-bg:#0B1F3C; --gly-fg:#F5F1E8; --gly-jade:#1C9E6E; --gly-btn:#00704A; --gly-muted:#B2BBCA;
+  --aby-bg:#FFF8F0; --aby-fg:#24343A; --aby-a:#D7897F; --aby-b:#F9B95C; --aby-m:#96C7B3; --aby-l:#3D6B7A;
+  --font:"Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141110;--surface:#1D1917;--card:#221D1B;--ink:#F3EEE8;--muted:#B3A9A1;--line:#2E2825;--accent:#D8674E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141110;--surface:#1D1917;--card:#221D1B;--ink:#F3EEE8;--muted:#B3A9A1;--line:#2E2825;--accent:#D8674E;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:720px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{display:block;text-decoration:none;color:var(--ink)}
+.logo{height:46px;width:auto;display:block}
+nav.links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+nav.links a{text-decoration:none;font-weight:600;font-size:.95rem;padding:8px 12px;border-radius:999px}
+nav.links a:hover{color:var(--accent)}
+nav.links a[aria-current="page"]{background:var(--surface);color:var(--accent)}
+.menu-btn{display:none;background:none;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font:inherit;font-weight:600;color:var(--ink)}
+@media (max-width:900px){.menu-btn{display:block}nav.links{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px;flex-direction:column}nav.links.open{display:flex}.logo{height:36px}}
+.view[hidden]{display:none!important}
+section{padding-block:88px}
+@media (max-width:640px){section{padding-block:60px}}
+.eyebrow{color:var(--accent);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 16px}
+h1{font-size:clamp(2.6rem,6.4vw,5rem);line-height:1;letter-spacing:-.035em;font-weight:800;margin:0 0 24px;text-wrap:balance}
+h2{font-size:clamp(1.9rem,4.2vw,3rem);line-height:1.06;letter-spacing:-.03em;margin:0 0 18px;font-weight:800;text-wrap:balance}
+h3{font-size:1.3rem;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
+.lead{font-size:1.2rem;max-width:40ch;margin:0 0 32px}
+.sub{color:var(--muted);max-width:58ch;margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:1.5px solid currentColor;transition:transform .15s;cursor:pointer;font:inherit;font-weight:700;background:none;color:inherit}
+.btn.solid{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:hover{transform:translateY(-2px)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+@media (max-width:900px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:1fr}}
+@media (max-width:640px){.grid2,.grid4{grid-template-columns:1fr}}
+.grid2>*,.grid3>*,.grid4>*{min-width:0}
+/* Banda de cristal */
+.night{background:var(--night);color:var(--night-fg);position:relative;overflow:hidden}
+.night .bgimg{position:absolute;top:0;bottom:0;right:0;width:min(62%,760px);background-size:cover;background-position:right top}
+.night .bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--night) 0%,rgba(5,6,7,.55) 30%,rgba(5,6,7,0) 60%)}
+@media (max-width:760px){.night .bgimg{width:100%;opacity:.45}.night .bgimg::after{background:linear-gradient(180deg,rgba(5,6,7,.2),var(--night))}}
+.night .wrap{position:relative}
+.night .lead{color:var(--night-muted)}
+.hero{padding-block:110px 120px}
+@media (max-width:640px){.hero{padding-block:72px 80px}}
+.hero h1 em{font-style:normal;color:#E0745A}
+.night .btn.solid{background:#F3F1EE;border-color:#F3F1EE;color:#0A0A0A}
+/* Problemas */
+.pain{border-radius:28px;padding:36px;display:flex;flex-direction:column;gap:18px;text-decoration:none;transition:transform .2s}
+.pain:hover{transform:translateY(-4px)}
+.pain q{font-size:1.45rem;font-weight:700;line-height:1.3;letter-spacing:-.01em;quotes:"“" "”"}
+.pain .go{font-weight:700;margin-top:auto}
+.pain.gly{background:var(--gly-bg);color:var(--gly-fg)}
+.pain.gly .go{color:var(--gly-jade)}
+.pain.aby{background:var(--aby-bg);color:var(--aby-fg);border:1px solid #F1E2D2}
+.pain.aby .go{color:var(--aby-l)}
+.pain small{opacity:.8;font-size:.95rem}
+/* Sentidos */
+.sense{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px}
+.sense .ico{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--accent);margin-bottom:16px}
+.sense .ico svg{width:22px;height:22px}
+.sense p{color:var(--muted);margin:0;font-size:.97rem}
+.principles{display:grid;gap:0;border-top:1px solid var(--line)}
+.principle{display:grid;grid-template-columns:64px minmax(0,1fr);gap:20px;padding-block:24px;border-bottom:1px solid var(--line)}
+.principle b{font-size:2.2rem;line-height:1;color:var(--accent);font-weight:800}
+.principle p{color:var(--muted);margin:0}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+@media (max-width:860px){.split{grid-template-columns:1fr;gap:36px}}
+.photo{border-radius:28px;overflow:hidden;background:#050607;max-width:100%}
+.photo img{display:block;width:100%;height:auto}
+.threes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+@media (max-width:560px){.threes{grid-template-columns:1fr}}
+.three{border-top:2px solid var(--accent);padding-top:12px}
+.three b{display:block;font-size:2rem;line-height:1;color:var(--accent);font-weight:800;margin-bottom:6px}
+.three span{font-size:.93rem;color:var(--muted)}
+/* App pages */
+.gly-page{background:var(--gly-bg);color:var(--gly-fg)}
+.gly-page .eyebrow{color:var(--gly-jade)}
+.gly-page .lead,.gly-page .sub{color:var(--gly-muted)}
+.gly-page .btn.solid{background:var(--gly-btn);border-color:var(--gly-btn);color:#fff}
+.gly-page .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.gly-page .card p{color:var(--gly-muted)}
+.gly-page h1 span{color:var(--gly-jade)}
+.aby-page{background:var(--aby-bg);color:var(--aby-fg)}
+.aby-page .eyebrow{color:var(--aby-l)}
+.aby-page .lead,.aby-page .sub{color:#4C5D63}
+.aby-page .btn.solid{background:linear-gradient(90deg,var(--aby-a),var(--aby-b));border:0;color:var(--aby-fg)}
+.aby-page .card{background:#fff;border:1px solid #F1E2D2}
+.aby-page .card p{color:#4C5D63}
+.card{border-radius:22px;padding:26px}
+.card .dot{width:12px;height:12px;border-radius:50%;margin-bottom:14px}
+.card p{margin:0;font-size:.97rem}
+.anchor{border-radius:28px;padding:40px;background:#FBDDC1;color:#3A2A1C;display:grid;gap:12px}
+.anchor .tag{font-size:.78rem;font-weight:800;letter-spacing:.14em;color:#BA641B}
+.anchor q{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.price{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:700px){.price{grid-template-columns:1fr}}
+.plan{border-radius:22px;padding:24px;display:grid;gap:6px;align-content:start}
+.plan b{font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.plan span{font-size:.92rem;opacity:.8}
+.gly-page .plan{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.gly-page .plan.best{border-color:var(--gly-jade)}
+.aby-page .plan{background:#fff;border:1px solid #F1E2D2}
+.aby-page .plan.best{border-color:var(--aby-a)}
+.post{max-width:360px;border-radius:22px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.post img{display:block;width:100%;height:auto}
+.note{font-size:.88rem;opacity:.75;margin-top:20px}
+.rules{display:grid;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.rules li{padding-left:22px;position:relative}
+.rules li::before{content:"";position:absolute;left:0;top:.6em;width:10px;height:10px;border-radius:50%;background:var(--aby-m)}
+.chat{background:#fff;border:1px solid #F1E2D2;border-radius:28px;padding:22px;display:grid;gap:10px;max-width:420px}
+.bubble{padding:12px 16px;border-radius:18px;max-width:85%;font-size:.95rem;line-height:1.4}
+.bubble.in{background:#F3EEE7;justify-self:start;border-bottom-left-radius:6px}
+.bubble.out{background:#DDEFE7;justify-self:end;border-bottom-right-radius:6px}
+.bubble small{display:block;font-weight:700;font-size:.75rem;color:var(--aby-l);margin-bottom:2px}
+/* FAQ */
+.tabs{display:inline-flex;gap:6px;background:var(--surface);padding:6px;border-radius:999px;margin-bottom:28px}
+.tabs button{font:inherit;font-weight:700;border:0;background:none;padding:10px 20px;border-radius:999px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+details{border-bottom:1px solid var(--line);padding-block:6px}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:700;font-size:1.08rem;padding-block:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;color:var(--accent);line-height:1;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:0 0 18px;color:var(--muted);max-width:68ch}
+.faq-wrap{max-width:820px}
+/* Sugerencias */
+form.sug{display:grid;gap:18px;max-width:640px}
+label{font-weight:700;font-size:.95rem;display:grid;gap:8px}
+input,select,textarea{font:inherit;font-weight:500;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);width:100%}
+textarea{min-height:150px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{font-weight:600;display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border:1.5px solid var(--line);border-radius:999px;cursor:pointer}
+.chips input{width:auto}
+.thanks{background:var(--surface);border-radius:22px;padding:28px;max-width:640px}
+footer{border-top:1px solid var(--line);padding-block:48px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px}
+footer .motto{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;letter-spacing:-.02em;margin:0}
+footer .small{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:.9rem}
+footer .logo{height:30px}
+.flink{display:flex;gap:16px;flex-wrap:wrap;font-weight:600;font-size:.95rem}
+.flink a{text-decoration:none}
+/* Cuestionario */
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,4vw,40px);max-width:760px}
+.qbar{height:6px;background:var(--surface);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.qbar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qcount{font-size:.85rem;color:var(--muted);font-weight:600;margin:0 0 8px}
+.qtext{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;letter-spacing:-.02em;line-height:1.25;margin:0 0 22px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;font:inherit;font-weight:600;padding:14px 18px;border:1.5px solid var(--line);border-radius:16px;background:var(--bg);color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+.qnav{display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+.qhint{font-size:.88rem;color:var(--muted);margin:10px 0 0}
+.result{border-radius:22px;padding:28px;background:var(--surface)}
+.result.gly{background:var(--gly-bg);color:var(--gly-fg)}
+.result.aby{background:var(--aby-bg);color:var(--aby-fg);border:1px solid #F1E2D2}
+.result h3{font-size:1.6rem;margin-bottom:12px}
+.result ul{margin:12px 0 0;padding-left:20px;display:grid;gap:6px}
+.ancla-card{background:#FBDDC1;color:#3A2A1C;border-radius:18px;padding:20px;margin-top:16px}
+.ancla-card small{font-weight:800;letter-spacing:.14em;color:#BA641B;font-size:.75rem}
+.ancla-card p{margin:6px 0 0;font-size:1.15rem;font-weight:700}
+/* Términos */
+.applogo{display:block;width:96px;height:96px;border-radius:24px;margin-bottom:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.applogo.round{border-radius:50%}
+.applogo:not(.round){border:2.5px solid #2BB58A;box-shadow:0 0 0 4px rgba(43,181,138,.18),0 12px 32px rgba(0,0,0,.35)}
+.gly-page .applogo{width:112px;height:112px;border-radius:26px}
+.tablogo:not(.round){outline:1.5px solid #2BB58A}
+.applogo.sm{width:56px;height:56px;border-radius:14px;margin:0;box-shadow:none}
+.applogo.sm.round{border-radius:50%}
+.legal .applogo{width:72px;height:72px}
+.tablogo{width:22px;height:22px;border-radius:6px;vertical-align:-5px;margin-right:8px}
+.tablogo.round{border-radius:50%}
+.plan.best{position:relative;border-width:2px;padding-top:34px;transform:scale(1.05);box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.plan .tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;font-weight:800;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
+.plan .save{font-size:1rem}
+.plan .btn{justify-content:center;margin-top:auto}
+.plan{grid-template-rows:auto}
+.price .plan{display:flex;flex-direction:column}
+.price .plan .btn{margin-top:auto;align-self:stretch}
+.price .plan>*:nth-last-child(2){margin-bottom:14px}
+.gly-page .plan.best{background:linear-gradient(160deg,#0F4A3A,#0B1F3C 75%);border-color:var(--gly-jade)}
+.gly-page .plan .tag{background:var(--gly-jade);color:#fff}
+.gly-page .plan .save{color:#5FD3A5}
+.aby-page .plan.best{background:linear-gradient(150deg,#FDE6DF,#FEF0D3);border-color:var(--aby-a)}
+.aby-page .plan .tag{background:linear-gradient(90deg,var(--aby-a),var(--aby-b));color:var(--aby-fg)}
+.aby-page .plan .save{color:#9A4A3F}
+@media (max-width:700px){.plan.best{order:-1;transform:none;margin-top:12px}}
+.legal-links{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;font-size:.92rem}
+.legal-links a{color:inherit;opacity:.85}
+.legal h2{margin-top:10px}
+.ltabs{flex-wrap:wrap;border-radius:22px}
+.card.feat,.aby-page .card.feat,.gly-page .card.feat{border-left:6px solid var(--c);border-radius:18px}
+.feat .ic{width:30px;height:30px;fill:none;stroke:var(--ci);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px;display:block}
+.aby-page .feat{background:#FFFDF9}
+.gly-page .feat{background:rgba(255,255,255,.06)}
+.anchor.withart{grid-template-columns:minmax(0,260px) minmax(0,1fr);align-items:center;gap:32px}
+.anchor-art{width:100%;height:auto;border-radius:22px;display:block}
+.anchor-txt{display:grid;gap:12px}
+@media (max-width:700px){.anchor.withart{grid-template-columns:1fr}.anchor-art{max-width:240px}}
+.photo.hands{background:transparent;border-radius:0;max-width:540px;justify-self:center;-webkit-mask-image:radial-gradient(closest-side,#000 72%,transparent 100%);mask-image:radial-gradient(closest-side,#000 72%,transparent 100%)}
+.aby-page .chat{max-width:none;background:#FFF8F0}
+.breath{width:150px;height:150px;display:block;margin-bottom:10px}
+.selftest{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:center;padding:24px 28px;border-radius:22px;text-decoration:none}
+.selftest b{display:block;font-size:1.25rem}
+.selftest small{opacity:.8;font-size:.95rem}
+.selftest .go{font-weight:800;white-space:nowrap}
+.selftest.gly{background:rgba(28,158,110,.14);border:1.5px solid var(--gly-jade);color:var(--gly-fg)}
+.selftest.gly .go{color:#5FD3A5}
+.selftest.aby{background:#fff;border:1.5px solid var(--aby-a);color:var(--aby-fg)}
+.selftest.aby .go{color:var(--aby-l)}
+.meter-mini{width:64px;height:10px;border-radius:99px;background:rgba(127,127,127,.25);overflow:hidden;display:block}
+.meter-mini i{display:block;height:100%;width:72%;border-radius:99px;background:linear-gradient(90deg,#96C7B3,#F9B95C,#D7897F)}
+.selftest.gly .meter-mini i{background:linear-gradient(90deg,#5FD3A5,#1C9E6E)}
+@media (max-width:640px){.selftest{grid-template-columns:1fr;gap:10px}}
+.meter{margin:18px 0 6px;padding:18px;border-radius:18px;background:rgba(127,127,127,.08)}
+.meter .bar{height:14px;border-radius:99px;background:rgba(127,127,127,.2);overflow:hidden;margin:10px 0}
+.meter .bar i{display:block;height:100%;border-radius:99px}
+.meter b{font-size:1.15rem}
+.meter p{margin:0}
+[id$="-descargar"],[id$="-precios"]{scroll-margin-top:90px}
+.download{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:center;padding:36px;border-radius:28px}
+@media (max-width:760px){.download{grid-template-columns:1fr;padding:26px}}
+.download.gly{background:linear-gradient(150deg,#0F4A3A,#0B1F3C 70%);border:1.5px solid var(--gly-jade)}
+.download.aby{background:#fff;border:1.5px solid #F1E2D2}
+.playbtn{display:inline-flex;align-items:center;gap:12px;background:#111;color:#fff;border-radius:14px;padding:10px 20px;text-decoration:none;font-weight:800;font-size:1.15rem;line-height:1.1}
+.playbtn small{display:block;font-weight:600;font-size:.72rem;opacity:.8}
+.playbtn[aria-disabled="true"]{cursor:default}
+.waitlist{display:grid;gap:12px;padding:22px;border-radius:20px;background:rgba(127,127,127,.08)}
+.waitlist label{display:grid;gap:4px}
+.waitlist label span{font-size:.92rem;opacity:.8}
+.waitlist input{font:inherit;padding:12px 14px;border-radius:12px;border:1px solid rgba(127,127,127,.4);background:#fff;color:#24343A;min-width:0}
+.waitlist .btn{justify-content:center}
+.wl-ok{margin:0;font-weight:700}
+.legal{max-width:820px}
+.legal h3{margin-top:30px}
+.legal p,.legal li{color:var(--muted)}
+.legal ul{padding-left:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg)}
 </style>
 </head>
 <body>
-<div style="width: 100%">
 
-  <header style="border-bottom: 1px solid #E7E2DB; background: #FAF8F5">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
-      <a href="#inicio" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #111111">
-        <svg width="50" height="40" viewBox="60 92 262 206" role="img" aria-label="Símbolo de Aleph Subcero">
-          <path d="M66 98 L150 98 L263 288 L207 288 Z" fill="#B5452F"></path>
-          <path d="M207 98 L263 98 C255 128 236 162 207 186 C224 158 224 126 207 98 Z" fill="#B5452F"></path>
-          <path d="M152 200 C118 220 78 252 66 288 L122 288 C106 262 110 228 152 200 Z" fill="#B5452F"></path>
-          <ellipse cx="294" cy="258" rx="12" ry="28" stroke="#B5452F" stroke-width="7" fill="none"></ellipse>
-        </svg>
-        <span style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em">Aleph Subcero</span>
-      </a>
-      <nav aria-label="Principal" style="display: flex; flex-wrap: wrap; gap: 28px; font-size: 16px; font-weight: 600">
-        <a href="#producto" style="text-decoration: none">3Gly</a>
-        <a href="#aby2" style="text-decoration: none">Aby2</a>
-        <a href="#nosotros" style="text-decoration: none">Nosotros</a>
-        <a href="#contacto" style="text-decoration: none">Contacto</a>
-      </nav>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#inicio"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 962 220" role="img" aria-label="Aleph Subcero" class="logo"><polygon points="57.92,60.40 92.64,60.40 162.08,159.60 127.36,159.60" fill="#B5452F"/><path d="M127.36,60.40 L162.08,60.40 C157.12,75.28 143.48,90.16 126.12,97.60 C134.80,85.20 134.80,72.80 127.36,60.40 Z" fill="#B5452F"/><path d="M92.64,159.60 L57.92,159.60 C62.88,144.72 76.52,129.84 93.88,122.40 C85.20,134.80 85.20,147.20 92.64,159.60 Z" fill="#B5452F"/><path d="M189.336 162.56599999999997Q185.61 162.56599999999997 183.15300000000002 160.91899999999998Q180.696 159.272 179.292 156.545Q177.888 153.81799999999998 177.29399999999998 150.605Q176.7 147.392 176.7 144.26Q176.7 141.128 177.29399999999998 137.915Q177.888 134.702 179.292 131.975Q180.696 129.248 183.15300000000002 127.60099999999998Q185.61 125.95399999999998 189.336 125.95399999999998Q193.11599999999999 125.95399999999998 195.57299999999998 127.60099999999998Q198.03 129.248 199.434 131.975Q200.838 134.702 201.43200000000002 137.915Q202.026 141.128 202.026 144.26Q202.026 147.392 201.43200000000002 150.605Q200.838 153.81799999999998 199.434 156.545Q198.03 159.272 195.57299999999998 160.91899999999998Q193.11599999999999 162.56599999999997 189.336 162.56599999999997ZM189.336 160.56799999999998Q191.226 160.56799999999998 192.333 159.54199999999997Q193.44 158.516 194.007 156.464Q194.574 154.41199999999998 194.763 151.361Q194.952 148.30999999999997 194.952 144.26Q194.952 138.85999999999999 194.574 135.242Q194.196 131.624 193.00799999999998 129.78799999999998Q191.82 127.95199999999998 189.336 127.95199999999998Q186.906 127.95199999999998 185.71800000000002 129.78799999999998Q184.53 131.624 184.152 135.242Q183.774 138.85999999999999 183.774 144.26Q183.774 148.30999999999997 183.963 151.361Q184.152 154.41199999999998 184.719 156.464Q185.286 158.516 186.393 159.54199999999997Q187.5 160.56799999999998 189.336 160.56799999999998Z" fill="#B5452F"/><path d="M246.646 144.56 267.766 75.44H287.254L308.374 144.56H294.93399999999997L290.47 130.16H264.454L260.086 144.56ZM286.726 117.968 277.366 87.68 268.15 117.968ZM316.05400000000003 144.56V74.0H329.11V144.56ZM365.686 146.0Q357.718 146.0 351.646 142.56799999999998Q345.574 139.136 342.142 133.112Q338.71 127.088 338.71 119.312Q338.71 110.816 342.07 104.528Q345.43 98.24000000000001 351.334 94.76Q357.238 91.28 364.918 91.28Q373.078 91.28 378.78999999999996 95.12Q384.502 98.96000000000001 387.238 105.92Q389.974 112.88 389.158 122.288H352.774Q353.398 126.944 355.702 129.824Q358.822 133.808 364.918 133.808Q368.758 133.808 371.494 132.128Q374.23 130.448 375.67 127.28L388.726 131.024Q385.798 138.12800000000001 379.486 142.06400000000002Q373.174 146.0 365.686 146.0ZM375.958 112.592Q375.382 108.368 373.75 106.064Q371.206 102.608 365.494 102.608Q358.822 102.608 355.702 106.64Q353.878 108.992 353.11 112.592ZM423.478 146.0Q416.13399999999996 146.0 411.094 142.736V167.6H397.942V92.72H409.462V95.55199999999999Q409.894 95.21600000000001 410.37399999999997 94.88Q415.414 91.28 422.806 91.28Q430.246 91.28 435.76599999999996 94.832Q441.286 98.384 444.334 104.55199999999999Q447.382 110.72 447.382 118.64Q447.382 126.416 444.382 132.608Q441.382 138.8 436.006 142.4Q430.63 146.0 423.478 146.0ZM421.366 134.38400000000001Q425.59 134.38400000000001 428.278 132.272Q430.966 130.16 432.262 126.584Q433.558 123.00800000000001 433.558 118.64Q433.558 114.32 432.214 110.744Q430.87 107.168 428.062 105.03200000000001Q425.25399999999996 102.896 420.88599999999997 102.896Q416.806 102.896 414.28599999999994 104.864Q411.76599999999996 106.832 410.614 110.384Q409.462 113.936 409.462 118.64Q409.462 123.344 410.614 126.896Q411.76599999999996 130.448 414.38199999999995 132.416Q416.998 134.38400000000001 421.366 134.38400000000001ZM491.34999999999997 144.56V120.08Q491.34999999999997 118.304 491.15799999999996 115.54400000000001Q490.96599999999995 112.784 489.95799999999997 110.0Q488.95 107.21600000000001 486.66999999999996 105.34400000000001Q484.39 103.47200000000001 480.21399999999994 103.47200000000001Q478.534 103.47200000000001 476.614 104.0Q474.69399999999996 104.52799999999999 473.01399999999995 106.03999999999999Q471.33399999999995 107.55199999999999 470.25399999999996 110.47999999999999Q469.174 113.408 469.174 118.256V144.56H455.926V75.44H467.542V98.048Q469.318 96.03200000000001 471.71799999999996 94.49600000000001Q476.71 91.184 484.342 91.184Q490.438 91.184 494.27799999999996 93.248Q498.11799999999994 95.31200000000001 500.25399999999996 98.48Q502.39 101.648 503.30199999999996 105.08Q504.21399999999994 108.512 504.40599999999995 111.344Q504.59799999999996 114.176 504.59799999999996 115.47200000000001V144.56ZM558.55 146.0Q550.87 146.0 544.702 143.288Q538.534 140.576 534.574 135.512Q530.6139999999999 130.448 529.558 123.44L543.1899999999999 121.424Q544.63 127.376 549.142 130.59199999999998Q553.654 133.808 559.414 133.808Q562.63 133.808 565.654 132.8Q568.678 131.792 570.622 129.824Q572.5659999999999 127.856 572.5659999999999 124.976Q572.5659999999999 123.92 572.2539999999999 122.936Q571.942 121.952 571.222 121.088Q570.502 120.224 569.182 119.456Q567.862 118.688 565.846 118.064L547.894 112.784Q545.8779999999999 112.208 543.2139999999999 111.152Q540.55 110.096 538.054 108.128Q535.558 106.16 533.902 102.92Q532.246 99.68 532.246 94.736Q532.246 87.77600000000001 535.75 83.168Q539.2539999999999 78.56 545.1099999999999 76.304Q550.966 74.048 558.0699999999999 74.096Q565.222 74.19200000000001 570.838 76.54400000000001Q576.454 78.896 580.246 83.384Q584.038 87.872 585.718 94.352L571.606 96.75200000000001Q570.838 93.392 568.7739999999999 91.088Q566.7099999999999 88.78399999999999 563.8539999999999 87.584Q560.9979999999999 86.384 557.8779999999999 86.28800000000001Q554.8059999999999 86.19200000000001 552.0939999999999 87.128Q549.382 88.064 547.6779999999999 89.84Q545.9739999999999 91.616 545.9739999999999 94.064Q545.9739999999999 96.32 547.366 97.73599999999999Q548.7579999999999 99.152 550.8699999999999 100.01599999999999Q552.982 100.88 555.1899999999999 101.456L567.1899999999999 104.72Q569.8779999999999 105.44 573.1419999999999 106.616Q576.406 107.792 579.406 109.88Q582.406 111.968 584.3499999999999 115.376Q586.294 118.784 586.294 124.016Q586.294 129.584 583.9659999999999 133.736Q581.6379999999999 137.888 577.702 140.60000000000002Q573.766 143.312 568.798 144.656Q563.8299999999999 146.0 558.55 146.0ZM614.2299999999999 146.096Q608.1339999999999 146.096 604.2939999999999 144.03199999999998Q600.454 141.968 598.318 138.8Q596.1819999999999 135.632 595.27 132.2Q594.358 128.768 594.1659999999999 125.936Q593.9739999999999 123.104 593.9739999999999 121.808V92.72H607.222V117.2Q607.222 118.976 607.414 121.736Q607.606 124.49600000000001 608.614 127.28Q609.622 130.064 611.9019999999999 131.93599999999998Q614.1819999999999 133.808 618.358 133.808Q620.0379999999999 133.808 621.9579999999999 133.28Q623.8779999999999 132.752 625.558 131.24Q627.2379999999999 129.728 628.318 126.77600000000001Q629.3979999999999 123.824 629.3979999999999 119.024V92.72H642.55V144.56H631.03V139.232Q629.2539999999999 141.248 626.9019999999999 142.784Q621.862 146.096 614.2299999999999 146.096ZM679.5099999999999 146.0Q671.7819999999999 146.0 666.598 142.4Q666.0219999999999 142.016 665.4939999999999 141.584V144.56H653.9739999999999V75.44H667.1259999999999V94.4Q671.9739999999999 91.28 678.838 91.28Q686.2779999999999 91.28 691.7979999999999 94.832Q697.3179999999999 98.384 700.3659999999999 104.55199999999999Q703.4139999999999 110.72 703.4139999999999 118.64Q703.4139999999999 126.416 700.4139999999999 132.608Q697.4139999999999 138.8 692.0379999999999 142.4Q686.6619999999999 146.0 679.5099999999999 146.0ZM677.3979999999999 134.38400000000001Q681.622 134.38400000000001 684.31 132.272Q686.9979999999999 130.16 688.2939999999999 126.584Q689.5899999999999 123.00800000000001 689.5899999999999 118.64Q689.5899999999999 114.32 688.2459999999999 110.744Q686.9019999999999 107.168 684.0939999999999 105.03200000000001Q681.286 102.896 676.9179999999999 102.896Q672.838 102.896 670.318 104.864Q667.7979999999999 106.832 666.646 110.384Q665.4939999999999 113.936 665.4939999999999 118.64Q665.4939999999999 123.344 666.646 126.896Q667.7979999999999 130.448 670.4139999999999 132.416Q673.0299999999999 134.38400000000001 677.3979999999999 134.38400000000001ZM734.9019999999999 146.0Q726.838 146.0 721.078 142.4Q715.318 138.8 712.246 132.608Q709.174 126.416 709.174 118.64Q709.174 110.768 712.366 104.576Q715.558 98.384 721.366 94.832Q727.174 91.28 735.0939999999999 91.28Q744.262 91.28 750.478 95.912Q756.694 100.54400000000001 758.4219999999999 108.56L745.366 112.01599999999999Q744.2139999999999 107.98400000000001 741.358 105.72800000000001Q738.502 103.47200000000001 734.9019999999999 103.47200000000001Q730.774 103.47200000000001 728.134 105.464Q725.4939999999999 107.456 724.2459999999999 110.888Q722.9979999999999 114.32 722.9979999999999 118.64Q722.9979999999999 125.408 725.9979999999999 129.608Q728.9979999999999 133.808 734.9019999999999 133.808Q739.318 133.808 741.622 131.792Q743.9259999999999 129.776 745.078 126.03200000000001L758.4219999999999 128.816Q756.2139999999999 137.072 750.0699999999999 141.536Q743.9259999999999 146.0 734.9019999999999 146.0ZM790.198 146.0Q782.2299999999999 146.0 776.1579999999999 142.56799999999998Q770.0859999999999 139.136 766.654 133.112Q763.222 127.088 763.222 119.312Q763.222 110.816 766.5819999999999 104.528Q769.9419999999999 98.24000000000001 775.846 94.76Q781.75 91.28 789.43 91.28Q797.5899999999999 91.28 803.3019999999999 95.12Q809.0139999999999 98.96000000000001 811.75 105.92Q814.486 112.88 813.67 122.288H777.286Q777.91 126.944 780.2139999999999 129.824Q783.334 133.808 789.43 133.808Q793.27 133.808 796.006 132.128Q798.742 130.448 800.1819999999999 127.28L813.2379999999999 131.024Q810.31 138.12800000000001 803.9979999999999 142.06400000000002Q797.6859999999999 146.0 790.198 146.0ZM800.4699999999999 112.592Q799.894 108.368 798.262 106.064Q795.718 102.608 790.006 102.608Q783.334 102.608 780.2139999999999 106.64Q778.39 108.992 777.622 112.592ZM822.55 144.56V92.72H834.0699999999999V101.072Q834.694 99.92 835.5099999999999 98.864Q837.1899999999999 96.656 839.6379999999999 95.21600000000001Q841.5099999999999 94.064 843.7179999999998 93.416Q845.9259999999999 92.768 848.2779999999999 92.6Q850.6299999999999 92.432 852.982 92.72V104.912Q850.8219999999999 104.24000000000001 847.9659999999999 104.456Q845.1099999999999 104.672 842.8059999999999 105.77600000000001Q840.502 106.832 838.9179999999999 108.584Q837.334 110.336 836.5179999999999 112.71199999999999Q835.7019999999999 115.088 835.7019999999999 118.064V144.56ZM883.5099999999999 146.0Q875.6859999999999 146.0 869.7819999999999 142.49599999999998Q863.8779999999999 138.992 860.5899999999999 132.824Q857.3019999999999 126.656 857.3019999999999 118.64Q857.3019999999999 110.52799999999999 860.6619999999998 104.36Q864.0219999999998 98.19200000000001 869.9259999999999 94.736Q875.8299999999999 91.28 883.5099999999999 91.28Q891.3339999999998 91.28 897.2619999999998 94.784Q903.1899999999998 98.28800000000001 906.5019999999998 104.456Q909.8139999999999 110.624 909.8139999999999 118.64Q909.8139999999999 126.70400000000001 906.4779999999998 132.872Q903.1419999999998 139.04 897.2139999999998 142.51999999999998Q891.2859999999998 146.0 883.5099999999999 146.0ZM883.5099999999999 133.808Q889.7979999999999 133.808 892.8939999999999 129.56Q895.9899999999999 125.312 895.9899999999999 118.64Q895.9899999999999 111.72800000000001 892.8459999999999 107.60000000000001Q889.7019999999999 103.47200000000001 883.5099999999999 103.47200000000001Q879.2379999999998 103.47200000000001 876.5019999999998 105.39200000000001Q873.7659999999998 107.31200000000001 872.4459999999999 110.72Q871.1259999999999 114.128 871.1259999999999 118.64Q871.1259999999999 125.6 874.2699999999999 129.704Q877.4139999999999 133.808 883.5099999999999 133.808Z" fill="currentColor"/></svg></a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menú</button>
+  <nav class="links" id="nav" aria-label="Principal">
+    <a href="#inicio">Inicio</a><a href="#tres-gly">3Gly</a><a href="#aby2">Aby2</a><a href="#nosotros">Nosotros</a><a href="#cuestionario">Cuestionario</a><a href="#preguntas">Preguntas</a><a href="#sugerencias">Sugerencias</a>
+  </nav>
+</div></header>
+
+<main>
+<!-- ============ INICIO ============ -->
+<div class="view" id="v-inicio">
+  <div class="night hero-band"><div class="bgimg" style="background-image:url(img/piramide-cristal.jpg)"></div>
+    <section class="hero"><div class="wrap">
+      <p class="eyebrow" style="color:#E0745A">Apps hechas para ti</p>
+      <h1>Lo difícil se sostiene<br><em>un día a la vez.</em></h1>
+      <p class="lead">Aleph Subcero es la casa de 3Gly y Aby2: apps que te acompañan cuando cuidarte, o cuidar a alguien que quieres, se pone cuesta arriba.</p>
+      <div class="btns"><a class="btn solid" href="#tres-gly">Quiero sostener mis hábitos</a><a class="btn" href="#aby2">Cuido a alguien</a></div>
+    </div></section>
+  </div>
+
+  <section><div class="wrap">
+    <p class="eyebrow">Empecemos por ti</p>
+    <h2>¿Qué te está costando hoy?</h2>
+    <p class="sub" style="margin-bottom:36px">Elige la frase que más se parece a tu día. Detrás de cada una hay una app pensada para quitarte ese peso.</p>
+    <div class="grid2">
+      <a class="pain gly" href="#tres-gly"><img class="applogo sm" src="img/logo-3gly.webp" alt="3Gly" width="56" height="56"><q>Ya sé lo que tengo que hacer. Lo difícil es seguir haciéndolo cuando no tengo ganas.</q><small>Para quien tiene la meta de bajar los triglicéridos y quiere que esta vez sí se sostenga.</small><span class="go">Conoce 3Gly →</span></a>
+      <a class="pain aby" href="#aby2"><img class="applogo sm round" src="img/logo-aby2.webp" alt="Aby2" width="56" height="56"><q>Cuido a mi mamá y siento que todo cae sobre mí: las medicinas, las citas y avisarle a todos.</q><small>Para quien cuida a un adulto mayor, a un bebé o a cualquier persona que depende de su cuidado.</small><span class="go">Conoce Aby2 →</span></a>
     </div>
-  </header>
+  </div></section>
 
-  <section id="inicio" style="max-width: 1200px; margin: 0 auto; padding: 120px 24px 112px; display: flex; flex-direction: column; gap: 28px">
-    <p style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B5452F">Apps de salud y bienestar</p>
-    <h1 style="margin: 0; font-size: clamp(40px, 6vw, 76px); line-height: 1.04; font-weight: 800; letter-spacing: -0.03em; max-width: 900px">Tecnología con propósito para cuidar lo que importa.</h1>
-    <p style="margin: 0; font-size: 21px; line-height: 1.6; color: #4A4540; max-width: 680px">Aleph Subcero crea apps que ayudan a las personas a cuidarse y a cuidar a quienes quieren, con herramientas simples, humanas y al alcance de todos.</p>
-    <div style="display: flex; flex-wrap: wrap; gap: 16px; padding-top: 8px">
-      <a href="#producto" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border-radius: 999px; background: #111111; color: #FAF8F5; font-size: 17px; font-weight: 700; text-decoration: none">Conoce nuestras apps</a>
-      <a href="#contacto" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border-radius: 999px; border: 1.5px solid #111111; color: #111111; font-size: 17px; font-weight: 700; text-decoration: none">Escríbenos</a>
+  <section style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+    <p class="eyebrow">Cómo se siente usarlas</p>
+    <h2>Una app que se siente, no solo se usa.</h2>
+    <p class="sub" style="margin-bottom:36px">La tecnología está cambiando rápido. Nosotros la usamos para acercarnos a ti: cada logro se ve, se escucha y se siente en la mano.</p>
+    <div class="grid4">
+      <div class="sense"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Lo ves</h3><p>Tu avance se llena de color. Cada día cumplido se nota en la pantalla.</p></div>
+      <div class="sense"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><h3>Lo escuchas</h3><p>Un sonido corto y cálido cuando cumples. Nada de alarmas que asustan.</p></div>
+      <div class="sense"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8a8 8 0 0 0 16 0v-2a2 2 0 0 0-4 0"/></svg></div><h3>Lo sientes</h3><p>Una vibración suave en la mano al lograrlo. Otra te acompaña al respirar.</p></div>
+      <div class="sense"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg></div><h3>Lo recuerdas</h3><p>Te hablamos de lo de todos los días: el café de la mañana, la cocina, la cita del doctor.</p></div>
     </div>
-  </section>
+  </div></section>
 
-  <section id="producto" style="background: #0B1F3C; color: #F5F1E8">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 112px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 64px">
-      <div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
-        <p style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6FD3A4">Nuestro producto</p>
-        <p style="margin: 0; font-size: 64px; font-weight: 800; letter-spacing: -0.03em; line-height: 1"><span style="color: #F5F1E8">3</span><span style="color: #6FD3A4; font-style: italic">Gly</span></p>
-        <h2 style="margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.02em">Tu porqué. Tu control.</h2>
-        <p style="margin: 0; font-size: 19px; line-height: 1.65; color: #D9D4CA; max-width: 560px">3Gly te acompaña en el seguimiento de tus triglicéridos con hábitos diarios de ejercicio, comidas y agua. Todo parte de tu ancla: eso que te recuerda tu porqué y te regresa al camino.</p>
-        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-top: 8px; max-width: 640px">
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #13294B">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6FD3A4" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"></path></svg>
-            <span style="font-size: 17px; font-weight: 700">Ejercicio</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #13294B">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6FD3A4" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle></svg>
-            <span style="font-size: 17px; font-weight: 700">Comidas</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #13294B">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6FD3A4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"></path></svg>
-            <span style="font-size: 17px; font-weight: 700">Agua y progreso</span>
-          </div>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding-top: 12px">
-          <span style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #F5F1E8; color: #0B1F3C; font-size: 17px; font-weight: 700">Próximamente en Google Play</span>
-          <span style="font-size: 16px; font-weight: 600; color: #6FD3A4">Prueba gratis de 7 días</span>
-        </div>
-        <p style="margin: 0; font-size: 15px; color: #BDB6AD"><a href="/privacidad" style="color: #D9D4CA">Aviso de privacidad</a> · <a href="/terminos" style="color: #D9D4CA">Términos</a> · <a href="/3gly/borrar-cuenta" style="color: #D9D4CA">Borrar mi cuenta</a></p>
-      </div>
-      <div style="flex: 1 1 300px; min-width: 0; display: flex; justify-content: center">
-        <img src="3gly-inicio.jpg" alt="Pantalla de inicio de la app 3Gly con el ancla, la meta y los avances de ejercicio, comidas, agua y alcohol" width="300" style="width: 100%; max-width: 300px; height: auto; border-radius: 36px; border: 8px solid #1D3560; box-shadow: 0 24px 60px rgba(0,0,0,0.35); display: block">
+  <section><div class="wrap split">
+    <div class="photo"><img src="img/aleph-cristal.jpg" alt="La letra aleph hecha de cristal"></div>
+    <div>
+      <p class="eyebrow">Por qué existimos</p>
+      <h2>Nacimos de dos huecos que nadie estaba llenando.</h2>
+      <p class="sub">Quien cuida a otra persona casi nunca recibe cuidado. Y casi todas las apps de salud hablan de diabetes o de colesterol, mientras que los triglicéridos, una de las grasas que viajan en la sangre, casi no tienen quién te acompañe. Aby2 y 3Gly nacieron para llenar esos dos huecos.</p>
+      <div class="btns" style="margin-top:28px"><a class="btn" href="#nosotros">Conoce nuestra historia</a></div>
+    </div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <div class="night" style="border-radius:28px"><div class="bgimg" style="background-image:url(img/piramide-cristal.jpg);width:55%"></div>
+      <div style="position:relative;padding:56px max(28px,4vw)">
+        <h2 style="max-width:16ch">¿Tienes una idea para mejorar las apps?</h2>
+        <p class="lead" style="max-width:38ch">Leemos cada sugerencia. Muchas de las mejoras de 3Gly y Aby2 salen de lo que nos cuentan quienes las usan.</p>
+        <a class="btn solid" href="#sugerencias">Dejar una sugerencia</a>
       </div>
     </div>
-  </section>
-
-
-  <section id="aby2" style="background: #F3EADF; color: #24343A">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 112px 24px; display: flex; flex-wrap: wrap-reverse; align-items: center; gap: 64px">
-      <div style="flex: 1 1 300px; min-width: 0; display: flex; justify-content: center">
-        <img src="aby2-logo.jpg" alt="Logo de Aby2: la palabra Aby con un 2 dorado dentro de un círculo morado y naranja" width="300" height="300" style="width: 100%; max-width: 300px; height: auto; border-radius: 50%; box-shadow: 0 24px 60px rgba(88,9,79,0.25); display: block">
-      </div>
-      <div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
-        <p style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #3D6B7A">Nuestra nueva app</p>
-        <p style="margin: 0; font-size: 64px; font-weight: 800; letter-spacing: -0.03em; line-height: 1">Aby<span style="color: #D7897F">2</span></p>
-        <h2 style="margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.02em">Always Beside You. Siempre a tu lado.</h2>
-        <p style="margin: 0; font-size: 19px; line-height: 1.65; color: #4A5559; max-width: 560px">Aby2 es para quien cuida a un adulto mayor. Organiza en familia las medicinas, las citas y los turnos, y te recuerda que tú también necesitas cuidarte.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; padding-top: 8px; max-width: 640px">
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #FFF8F0; border-left: 6px solid #D7897F">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B5615A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"></rect><path d="M12 8v6M9 11h6"></path></svg>
-            <span style="font-size: 17px; font-weight: 700">Medicinas a su hora</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #FFF8F0; border-left: 6px solid #F9B95C">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A86A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
-            <span style="font-size: 17px; font-weight: 700">Citas y notas para el doctor</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #FFF8F0; border-left: 6px solid #6398A9">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3D6B7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.3c2 .8 3.5 2.8 3.5 5.7"></path></svg>
-            <span style="font-size: 17px; font-weight: 700">A quién le toca cuidar</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #FFF8F0; border-left: 6px solid #96C7B3">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3F7F66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg>
-            <span style="font-size: 17px; font-weight: 700">Para ti, que cuidas</span>
-          </div>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding-top: 12px">
-          <span style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; background: linear-gradient(90deg, #D7897F, #F9B95C); color: #24343A; font-size: 17px; font-weight: 700">Próximamente en Google Play</span>
-          <span style="font-size: 16px; font-weight: 700; color: #3D6B7A">Prueba gratis de 14 días</span>
-        </div>
-        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #5E676A; max-width: 560px">Aby2 te ayuda a organizarte. No es un servicio médico: no diagnostica ni receta. <a href="/aby2/privacidad" style="color: #24343A">Aviso de privacidad</a> · <a href="/aby2/terminos" style="color: #24343A">Términos</a> · <a href="/aby2/borrar-cuenta" style="color: #24343A">Borrar mi cuenta</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section style="max-width: 1200px; margin: 0 auto; padding: 112px 24px; display: flex; flex-wrap: wrap; gap: 48px">
-    <div style="flex: 1 1 320px; min-width: 0">
-      <p style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B5452F">Lo que viene</p>
-    </div>
-    <div style="flex: 2 1 520px; min-width: 0">
-      <p style="margin: 0; font-size: 32px; line-height: 1.4; font-weight: 600; letter-spacing: -0.01em">3Gly y Aby2 son los primeros pasos. Estamos construyendo más apps para acercar la salud y el bienestar a más personas, estén donde estén.</p>
-    </div>
-  </section>
-
-  <section id="nosotros" style="border-top: 1px solid #E7E2DB">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 112px 24px; display: flex; flex-wrap: wrap; gap: 48px">
-      <div style="flex: 1 1 320px; min-width: 0">
-        <p style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B5452F">Nosotros</p>
-      </div>
-      <div style="flex: 2 1 520px; min-width: 0">
-        <p style="margin: 0; font-size: 32px; line-height: 1.4; font-weight: 600; letter-spacing: -0.01em">Nacimos de la idea de que atender bien a la gente es lo más importante. Cada app que hacemos busca tratar a cada persona con calidez, respeto y cercanía.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="contacto" style="background: #111111; color: #FAF8F5">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 24px">
-      <p style="margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #E07A62">Contacto</p>
-      <h2 style="margin: 0; font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; letter-spacing: -0.03em">¿Hablamos?</h2>
-      <a href="mailto:alephsubcerohq@gmail.com" style="font-size: clamp(20px, 2.6vw, 30px); font-weight: 700; color: #FAF8F5; text-decoration: underline; text-underline-offset: 6px; word-break: break-all">alephsubcerohq@gmail.com</a>
-    </div>
-  </section>
-
-  <footer style="background: #111111; color: #BDB6AD; border-top: 1px solid #2A2724">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 28px 24px; font-size: 15px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px">
-      <span>© 2026 Aleph Subcero</span>
-      <span style="display: flex; flex-wrap: wrap; gap: 12px 24px"><a href="/privacidad" style="color: #E8E2D9">Privacidad de 3Gly</a><a href="/terminos" style="color: #E8E2D9">Términos de 3Gly</a><a href="/3gly/borrar-cuenta" style="color: #E8E2D9">Borrar cuenta de 3Gly</a><a href="/aby2/privacidad" style="color: #E8E2D9">Privacidad de Aby2</a><a href="/aby2/terminos" style="color: #E8E2D9">Términos de Aby2</a><a href="/aby2/borrar-cuenta" style="color: #E8E2D9">Borrar cuenta de Aby2</a></span>
-    </div>
-  </footer>
-
+  </div></section>
 </div>
+
+<!-- ============ 3GLY ============ -->
+<div class="view gly-page" id="v-tres-gly" hidden>
+  <section><div class="wrap split">
+    <div>
+      <img class="applogo" src="img/logo-3gly.webp" alt="Logo de 3Gly" width="96" height="96">
+      <p class="eyebrow">3Gly · Tu porqué. Tu control.</p>
+      <h1>El día 1 es fácil.<br><span>3Gly es para el día 4.</span></h1>
+      <p class="lead">Cuando el doctor te dice que bajes los triglicéridos, la lista de qué hacer ya la conoces. Lo que cuesta es sostenerla. 3Gly te acompaña cada día para que tu meta no se quede en buenas intenciones.</p>
+      <div class="btns"><a class="btn solid" href="#tres-gly/descargar">Quiero mis 7 días gratis</a><a class="btn" href="#tres-gly/precios">Ver precios</a></div>
+    </div>
+    <div class="post" style="justify-self:center"><img src="img/por-que-el-3.jpg" alt="Post de 3Gly: ¿Por qué el 3? Un triglicérido son 3 cadenas unidas a una base"></div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <div class="anchor withart">
+      <img class="anchor-art" src="img/ancla-cristal.jpg" alt="Un ancla hecha de facetas de cristal verde" width="800" height="800">
+      <div class="anchor-txt">
+      <span class="tag">TU ANCLA</span>
+      <q>Tu porqué es lo que te levanta los días en que no tienes ganas.</q>
+      <p style="margin:0;max-width:60ch">El ancla es el corazón de 3Gly: una frase, una persona, una canción. Lo eliges tú y la app te lo recuerda justo cuando más lo necesitas. Con un porqué fuerte, sostener tus hábitos deja de depender de la fuerza de voluntad.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <h2>Todo lo que necesitas para no soltar.</h2>
+    <div class="grid3" style="margin-top:28px">
+      <div class="card feat" style="--c:#1C9E6E;--ci:#5FD3A5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.5" width="14" height="17" rx="2.5"/><path d="M9 3h6v3H9zM9 14l2 2 4-4.5"/></svg><h3>Registra en segundos</h3><p>Comidas, agua y ejercicio. Marcas cómo te fue y listo: sin contar calorías.</p></div>
+      <div class="card feat" style="--c:#FBDDC1;--ci:#FBDDC1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><h3>Recordatorios que no regañan</h3><p>Si un día no entras, la app te regresa a tu ancla con cariño, nunca con culpa.</p></div>
+      <div class="card feat" style="--c:#3CB16D;--ci:#6FD49A"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></svg><h3>Ve tu esfuerzo crecer</h3><p>La silueta se llena de verde, sientes una vibración y escuchas tu logro.</p></div>
+      <div class="card feat" style="--c:#1C9E6E;--ci:#5FD3A5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4h11.5l-2.2 4 2.2 4H5"/></svg><h3>Programa de 21 días</h3><p>Un camino paso a paso para convertir lo que te cuesta en rutina.</p></div>
+      <div class="card feat" style="--c:#FBDDC1;--ci:#FBDDC1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20.5h18M6.5 17v-5M11.5 17V7M16.5 17V10"/></svg><h3>Tus gráficas</h3><p>Lleva el registro de tus análisis para platicarlos con tu médico.</p></div>
+      <div class="card feat" style="--c:#3CB16D;--ci:#6FD49A"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2.5"/></svg><h3>Tus datos son tuyos</h3><p>Se guardan cifrados y solo tú los ves. No se venden ni se comparten.</p></div>
+    </div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <a class="selftest gly" href="#cuestionario/gly"><span class="meter-mini" aria-hidden="true"><i></i></span><span><b>¿Qué tanto te ayudaría 3Gly?</b><small>Contesta 8 preguntas en 2 minutos y mira tu medidor.</small></span><span class="go">Hacer mi autoevaluación →</span></a>
+  </div></section>
+  <section style="padding-top:0" id="tres-gly-precios"><div class="wrap">
+    <h2>Pruébala gratis 7 días.</h2>
+    <p class="sub" style="margin-bottom:24px">Tu primera semana completa, con tu ancla y todas las funciones. Si te ayuda, sigues; si no, cancelas desde Google Play.</p>
+    <div class="price">
+      <div class="plan"><span>Para empezar</span><b>7 días gratis</b><span>Todo incluido, con cualquier plan</span><a class="btn" href="#tres-gly/descargar">Empezar gratis</a></div>
+      <div class="plan best"><em class="tag">El que más te conviene</em><span>Anual</span><b>$990 MXN</b><span>al año: sale en menos de $20 a la semana</span><strong class="save">Ahorras $518 al año (34%)</strong><a class="btn solid" href="#tres-gly/descargar">Quiero el plan anual</a></div>
+      <div class="plan"><span>Semanal</span><b>$29 MXN</b><span>por semana</span><span>Son $1,508 MXN al año</span><a class="btn" href="#tres-gly/descargar">Quiero el plan semanal</a></div>
+    </div>
+    <p class="note">3Gly no diagnostica ni sustituye a tu médico. Te ayuda a llevar tu registro y sostener tus hábitos, junto con lo que te indique tu médico.</p>
+    <p class="legal-links"><a href="/privacidad">Aviso de privacidad</a><a href="/terminos">Términos y condiciones</a><a href="/3gly/borrar-cuenta">Borrar mi cuenta</a></p>
+  </div></section>
+  <section style="padding-top:0" id="tres-gly-descargar"><div class="wrap">
+    <div class="download gly">
+      <div>
+        <p class="eyebrow">Descárgala</p>
+        <h2>3Gly llega muy pronto a Google Play.</h2>
+        <p class="sub">Al descargarla empiezan tus 7 días gratis con todo incluido: tu ancla, tus registros y el programa de 21 días.</p>
+        <div class="btns" style="margin-top:20px"><a class="playbtn" data-play="tres-gly" href="#tres-gly/descargar" aria-disabled="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8.9.6L20.4 12.9c.5-.3.5-.9 0-1.2L4.9 2.2c-.4-.2-.9.1-.9.6z" fill="currentColor"/></svg><span><small>Próximamente en</small>Google Play</span></a></div>
+      </div>
+      <form class="waitlist" data-app="3Gly">
+        <label for="wl-tres-gly"><b>Avísame cuando salga</b><span>Te escribimos el día del lanzamiento. Nada más.</span></label>
+        <input id="wl-tres-gly" type="email" required placeholder="tucorreo@ejemplo.com" autocomplete="email">
+        <button class="btn solid" type="submit">Quiero que me avisen</button>
+        <p class="wl-ok" hidden>¡Listo! Se abrió tu correo con el mensaje para unirte a la lista. Envíalo y te avisamos.</p>
+      </form>
+    </div>
+  </div></section>
+</div>
+
+<!-- ============ ABY2 ============ -->
+<div class="view aby-page" id="v-aby2" hidden>
+  <section><div class="wrap split">
+    <div>
+      <img class="applogo round" src="img/logo-aby2.webp" alt="Logo de Aby2" width="96" height="96">
+      <p class="eyebrow">Aby2 · Nadie debería cuidar en soledad</p>
+      <h1>Tú cuidas a todos. Aby2 te cuida a ti.</h1>
+      <p class="lead">Aby2 está hecha para la persona cuidadora principal: medicinas, citas, turnos y gastos en un solo lugar, compartido con tu familia. Además, un espacio solo para ti. La app es la herramienta; tú eres el centro.</p>
+      <div class="btns"><a class="btn solid" href="#aby2/descargar">Quiero Aby2</a><a class="btn" href="#aby2/precios">Ver precios</a></div>
+    </div>
+    <div class="photo hands"><img src="img/manos-cristal.jpg" alt="Dos manos hechas de facetas de cristal, una se acerca a la otra para ayudar" width="800" height="800"></div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <h2>Todo el cuidado, ordenado.</h2>
+    <p class="sub">Pensada para cuidar a un adulto mayor. Sirve igual para organizar el cuidado de un bebé, de niñas y niños pequeños o de cualquier persona que dependa de ti.</p>
+    <div class="grid3" style="margin-top:28px">
+      <div class="card feat" style="--c:#D7897F;--ci:#B9594D"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M12 8.5v6M9 11.5h6"/></svg><h3>Medicinas</h3><p>Quién le dio qué y a qué hora. Se acabó el “¿ya se la tomó?”.</p></div>
+      <div class="card feat" style="--c:#F9B95C;--ci:#B87412"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><h3>Citas</h3><p>Cada cita con su hora, lugar y quién acompaña.</p></div>
+      <div class="card feat" style="--c:#6398A9;--ci:#3D6B7A"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2.1.7 3.5 2.8 3.5 5.7"/></svg><h3>Turnos en familia</h3><p>Reparte los días entre la familia y quien ayuda con el cuidado. Todos saben a quién le toca.</p></div>
+      <div class="card feat" style="--c:#96C7B3;--ci:#3F8A6E"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5h10M9.5 12h10M9.5 17.5h10"/><path d="M4 6.5l1.2 1.2L7 5.5M4 12l1.2 1.2L7 11"/><circle cx="5.3" cy="17.5" r="1"/></svg><h3>Lo que necesita</h3><p>Pañales, cremas, despensa: una lista que toda la familia ve.</p></div>
+      <div class="card feat" style="--c:#D7897F;--ci:#B9594D"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg><h3>Gastos claros</h3><p>Quién pagó qué, sin cuentas en papelitos ni discusiones.</p></div>
+      <div class="card feat" style="--c:#F9B95C;--ci:#B87412"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 1 7.5 18H19v3H7.5M9 7.5h6"/></svg><h3>Bitácora e historial</h3><p>Lo que pasó cada día, listo para la siguiente consulta.</p></div>
+    </div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap grid2">
+    <div class="card" style="padding:36px;background:#E7F3EE;border-color:#CFE6DC">
+      <svg class="breath" viewBox="0 0 200 200" role="img" aria-label="Círculo verde para respirar: inhala 4 segundos, exhala 6"><circle cx="100" cy="100" r="96" fill="#96C7B3" opacity=".18"/><circle cx="100" cy="100" r="78" fill="#96C7B3" opacity=".3"/><circle cx="100" cy="100" r="60" fill="#96C7B3" opacity=".5"/><circle cx="100" cy="100" r="44" fill="#96C7B3"/><circle cx="100" cy="100" r="96" fill="none" stroke="#3F8A6E" stroke-width="1.5" stroke-dasharray="3 7" opacity=".6"/><text x="100" y="97" text-anchor="middle" font-size="15" font-weight="800" fill="#24343A">Inhala</text><text x="100" y="116" text-anchor="middle" font-size="11" fill="#24343A">4 · exhala 6</text></svg>
+      <p class="eyebrow">Para ti</p>
+      <h2 style="font-size:2rem">Un respiro de 1 minuto.</h2>
+      <p>Cuando el día pesa, Aby2 te propone respirar: el celular vibra al ritmo de tu respiración y suena lluvia de fondo. Además, 12 guías cortas para cuidarte: dormir mejor aunque te despierten, pedir ayuda sin culpa, qué hacer cuando sientes enojo.</p>
+    </div>
+    <div class="card" style="padding:36px">
+      <p class="eyebrow">Comunidad de personas cuidadoras</p>
+      <h2 style="font-size:2rem">Un chat con gente que vive lo mismo.</h2>
+      <p>Un grupo de WhatsApp para desahogarte y compartir trucos, gratis siempre. Con reglas claras:</p>
+      <ul class="rules" style="margin-bottom:20px"><li>Respeto siempre, sin juzgar cómo cuida otra persona.</li><li>Lo que se cuenta aquí, se queda aquí.</li><li>Sin ventas, cadenas, política ni religión.</li><li>Los temas de medicinas, con su médico.</li></ul>
+      <div class="chat" aria-label="Ejemplo de la comunidad de personas cuidadoras">
+      <div class="bubble in"><small>Comunidad de personas cuidadoras</small>Hoy mi papá no quiso comer y me sentí fatal.</div>
+      <div class="bubble in"><small>Otra persona cuidadora</small>Te entiendo, a mí me pasa seguido. ¿Probaste darle porciones chiquitas varias veces al día?</div>
+      <div class="bubble out">Gracias, lo intento mañana. Qué alivio saber que a alguien más le pasa.</div>
+      <p style="margin:6px 0 0;font-size:.8rem;color:#4C5D63">Conversación de ejemplo.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <a class="selftest aby" href="#cuestionario/aby"><span class="meter-mini" aria-hidden="true"><i></i></span><span><b>¿Qué tanto te ayudaría Aby2?</b><small>Contesta 8 preguntas sobre tu día como persona cuidadora y mira tu medidor.</small></span><span class="go">Hacer mi autoevaluación →</span></a>
+  </div></section>
+  <section style="padding-top:0" id="aby2-precios"><div class="wrap">
+    <h2>Lo básico es gratis. Siempre.</h2>
+    <p class="sub" style="margin-bottom:24px">La comunidad de personas cuidadoras y lo esencial de la app no cuestan nada. Para que toda la familia comparta el cuidado, prueba el plan familiar 14 días gratis.</p>
+    <div class="price">
+      <div class="plan"><span>Para siempre</span><b>Gratis</b><span>Lo básico y la comunidad</span><a class="btn" href="#aby2/descargar">Empezar gratis</a></div>
+      <div class="plan best"><em class="tag">El que más te conviene</em><span>Plan familiar anual</span><b>$899 MXN</b><span>al año por familia: sale en menos de $75 al mes</span><strong class="save">Ahorras $289, como 3 meses gratis</strong><a class="btn solid" href="#aby2/descargar">Quiero el plan anual</a></div>
+      <div class="plan"><span>Plan familiar mensual</span><b>$99 MXN</b><span>al mes por familia</span><span>Son $1,188 MXN al año</span><a class="btn" href="#aby2/descargar">Quiero el plan mensual</a></div>
+    </div>
+    <p class="note">Aby2 te ayuda a organizar el cuidado. No sustituye las indicaciones de su médico.</p>
+    <p class="legal-links"><a href="/aby2/privacidad">Aviso de privacidad</a><a href="/aby2/terminos">Términos y condiciones</a><a href="/aby2/borrar-cuenta">Borrar mi cuenta</a></p>
+  </div></section>
+  <section style="padding-top:0" id="aby2-descargar"><div class="wrap">
+    <div class="download aby">
+      <div>
+        <p class="eyebrow">Descárgala</p>
+        <h2>Aby2 llega muy pronto a Google Play.</h2>
+        <p class="sub">Lo básico y la Comunidad de personas cuidadoras son gratis siempre. El plan familiar trae 14 días de prueba.</p>
+        <div class="btns" style="margin-top:20px"><a class="playbtn" data-play="aby2" href="#aby2/descargar" aria-disabled="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8.9.6L20.4 12.9c.5-.3.5-.9 0-1.2L4.9 2.2c-.4-.2-.9.1-.9.6z" fill="currentColor"/></svg><span><small>Próximamente en</small>Google Play</span></a></div>
+      </div>
+      <form class="waitlist" data-app="Aby2">
+        <label for="wl-aby2"><b>Avísame cuando salga</b><span>Te escribimos el día del lanzamiento. Nada más.</span></label>
+        <input id="wl-aby2" type="email" required placeholder="tucorreo@ejemplo.com" autocomplete="email">
+        <button class="btn solid" type="submit">Quiero que me avisen</button>
+        <p class="wl-ok" hidden>¡Listo! Se abrió tu correo con el mensaje para unirte a la lista. Envíalo y te avisamos.</p>
+      </form>
+    </div>
+  </div></section>
+</div>
+
+<!-- ============ NOSOTROS ============ -->
+<div class="view" id="v-nosotros" hidden>
+  <div class="night"><div class="bgimg" style="background-image:url(img/piramide-cristal.jpg)"></div>
+    <section class="hero"><div class="wrap">
+      <p class="eyebrow" style="color:#E0745A">Nosotros</p>
+      <h1>Primero tú.<br>Después, la tecnología.</h1>
+      <p class="lead">Aleph Subcero es la casa donde nacen apps para sostener lo difícil de la vida diaria. Cada decisión empieza con la misma pregunta: ¿esto le hace la vida más fácil a quien la usa?</p>
+    </div></section>
+  </div>
+  <section><div class="wrap split" style="align-items:start">
+    <div>
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2>Tres reglas chiquitas.</h2>
+      <p class="sub">Como el caracol que dibuja triángulos sin saberlo, trabajamos con reglas simples repetidas todos los días.</p>
+    </div>
+    <div class="principles">
+      <div class="principle"><b>1</b><div><h3>Tú vas primero</h3><p>Diseñamos desde tu problema, no desde la tecnología. Si algo te confunde, es nuestro error y lo arreglamos.</p></div></div>
+      <div class="principle"><b>2</b><div><h3>Cerca, como una persona</h3><p>Acercamos la máquina al ser humano: colores, sonidos y vibraciones que se sienten cálidos. Usamos palabras de amigo, nunca de regaño.</p></div></div>
+      <div class="principle"><b>3</b><div><h3>Mejorar cada día</h3><p>Usamos la inteligencia artificial y tus sugerencias para que cada versión sea mejor que la anterior. Y te seguimos acompañando después de que empiezas.</p></div></div>
+    </div>
+  </div></section>
+  <section style="padding-top:0"><div class="wrap split">
+    <div>
+      <p class="eyebrow">Nuestra historia</p>
+      <h2>Dos necesidades. Dos apps.</h2>
+      <h3 style="margin-top:24px">Quien cuida también necesita cuidado</h3>
+      <p class="sub">Detrás de cada adulto mayor, bebé o persona que depende de otros hay alguien que organiza las medicinas, las citas, los gastos y los turnos, casi siempre sin pago y sin descanso. Esa persona cuidadora principal suele quedar en el olvido. Aby2 nació para ella: para quitarle peso, repartir el cuidado y darle un espacio propio.</p>
+      <h3 style="margin-top:24px">Los triglicéridos también merecen atención</h3>
+      <p class="sub">Las enfermedades del corazón son la primera causa de muerte en el mundo: unos 19.8 millones de personas murieron por ellas en 2022 (<a href="https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)">OMS</a>). Casi todos los infartos vienen de arterias tapadas por depósitos de grasa (<a href="https://www.who.int/news-room/fact-sheets/detail/heart-attack">OMS</a>). Esa grasa viaja en la sangre en partículas que llevan colesterol y triglicéridos. La investigación muestra que las partículas ricas en triglicéridos también contribuyen a taparlas (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7616757/">JACC, 2024</a>). Aun así, la mayoría de las apps se enfocan en diabetes o colesterol. 3Gly nació para acompañar a quien tiene la meta de bajar los triglicéridos.</p>
+      <h3 style="margin-top:24px">¿Y el nombre?</h3>
+      <p class="sub">Aleph cero (ℵ₀) es el cardinal de los números naturales: contar 1, 2, 3… sin terminar nunca. Así vemos los hábitos y el cuidado: un paso, otro y otro más.</p>
+    </div>
+    <div class="photo"><img src="img/aleph-cristal.jpg" alt="La letra aleph hecha de cristal"></div>
+  </div></section>
+</div>
+
+<!-- ============ PREGUNTAS ============ -->
+<div class="view" id="v-preguntas" hidden>
+  <section><div class="wrap faq-wrap">
+    <p class="eyebrow">Preguntas frecuentes</p>
+    <h1 style="font-size:clamp(2.2rem,5vw,3.6rem)">Lo que más nos preguntan.</h1>
+    <div class="tabs" role="tablist"><button role="tab" id="t-gly" aria-selected="true" aria-controls="f-gly"><img class="tablogo" src="img/logo-3gly.webp" alt="">3Gly</button><button role="tab" id="t-aby" aria-selected="false" aria-controls="f-aby"><img class="tablogo round" src="img/logo-aby2.webp" alt="">Aby2</button></div>
+    <div id="f-gly" role="tabpanel" aria-labelledby="t-gly">
+      <details open><summary>¿Para qué sirve 3Gly?</summary><p>Para ayudarte a construir hábitos diarios hacia tu meta: moverte, comer mejor, tomar agua y, sobre todo, no soltar. 3Gly te acompaña; las decisiones sobre tu salud las tomas con tu médico.</p></details>
+      <details><summary>¿Qué la hace diferente?</summary><p>Casi siempre sabemos qué hacer; lo que cuesta es ser constantes. 3Gly te acompaña día a día y te ayuda a encontrar tu porqué, para que cuidarte no dependa solo de la fuerza de voluntad.</p></details>
+      <details><summary>¿Qué es el ancla?</summary><p>Es el corazón de la app: una palabra, una frase, una persona o una canción que te recuerda por qué lo haces. Una buena ancla te pone en la zona, como a un atleta antes de competir. Además, te sostiene en los días difíciles.</p></details>
+      <details><summary>¿Qué me mantiene constante cuando cuesta trabajo?</summary><p>Tu ancla. Pregúntate por qué lo haces; eso que te responde es tu ancla. Si todavía no te sostiene en un mal día, la app te ayuda a encontrar una más fuerte.</p></details>
+      <details><summary>¿Y si un día no tengo ganas de nada?</summary><p>Es normal; a todos nos pasa. Si dejas de entrar, la app te manda recordatorios que nunca regañan: solo te regresan a tu ancla. Ese es su propósito, ayudarte a seguir aun en los días sin ganas.</p></details>
+      <details><summary>¿En cuánto tiempo veo avances?</summary><p>El programa de 21 días te ayuda a que lo que hoy te cuesta se vuelva rutina. Tus análisis y cualquier decisión sobre tu salud los revisas con tu médico.</p></details>
+      <details><summary>¿Cómo sabe la app lo que como?</summary><p>La sección de comidas es como un diario: en cada comida marcas cómo te fue, ligera, con proteína o si se te pasó la mano. No cuentas calorías; tomas conciencia de lo que comes. Eso es lo que te ayuda a elegir mejor.</p></details>
+      <details><summary>¿Por qué 3Gly y no otra app?</summary><p>Porque está hecha solo para esto. Casi todas las apps de salud se enfocan en diabetes, peso o colesterol. 3Gly está diseñada desde cero para quien tiene la meta de bajar sus triglicéridos. En un solo lugar tienes tu ancla, el registro de comidas, agua, ejercicio y días sin alcohol, el programa de 21 días y tus análisis en gráficas. Cada logro se celebra con color, sonido y vibración para que quieras volver mañana. Cuando un día flojeas, te regresa a tu porqué sin regaños.</p></details>
+      <details><summary>¿Cuánto cuesta?</summary><p>Tienes 7 días gratis con todo incluido. Después te conviene el plan anual de $990 MXN, con el que ahorras 34%. También está el semanal de $29 MXN. Puedes cancelar cuando quieras desde Google Play.</p></details>
+      <details><summary>¿Necesito comprar algo aparte?</summary><p>No. Solo necesitas decidirte a trabajar en tus hábitos.</p></details>
+      <details><summary>¿Necesito saber mi nivel de triglicéridos para empezar?</summary><p>Ayuda tenerlo, porque así ves tu avance desde tu punto de partida. Si no lo tienes, puedes empezar con tus hábitos y agregarlo cuando tengas tus análisis.</p></details>
+      <details><summary>¿Cada cuánto debo registrar mis análisis?</summary><p>Cuando tu médico te los pida. La app guarda cada resultado con su fecha para que veas tu camino completo.</p></details>
+      <details><summary>¿La app me dice qué medicina tomar?</summary><p>No. 3Gly no receta ni cambia tratamientos. Te ayuda a sostener los hábitos que acordaste con tu médico.</p></details>
+      <details><summary>¿Puedo cambiar mi ancla o mi meta?</summary><p>Sí, cuando quieras. Si sientes que tu ancla ya no te mueve, cámbiala por una que te hable más fuerte.</p></details>
+      <details><summary>¿Hay recordatorios? ¿Puedo apagarlos?</summary><p>Sí. Tú eliges cuáles activar y a qué hora. Los apagas cuando quieras. Ninguno regaña.</p></details>
+      <details><summary>¿Funciona en iPhone?</summary><p>Primero sale para Android. La versión para iPhone viene después.</p></details>
+      <details><summary>¿Quién ve mis datos?</summary><p>Solo tú. Tus datos se guardan cifrados en tu cuenta. Nadie del equipo ve tu información individual; solo usamos datos anónimos y agregados para mejorar la app. No se venden ni se comparten.</p></details>
+    </div>
+    <div id="f-aby" role="tabpanel" aria-labelledby="t-aby" hidden>
+      <details open><summary>¿Para quién es Aby2?</summary><p>Para las familias que cuidan en casa a un adulto mayor, a un bebé o a cualquier persona que dependa de su cuidado. Sobre todo, es para quien lleva la mayor parte del cuidado. Aby2 ordena el día a día y reparte la carga entre todos.</p></details>
+      <details><summary>¿Qué puedo organizar en la app?</summary><p>Medicinas y sus horarios, citas, turnos entre familiares y la persona contratada para ayudar, la lista de lo que necesita, los gastos y una bitácora de cada día.</p></details>
+      <details><summary>¿Mi familia puede ver lo mismo que yo?</summary><p>Sí. Invitas a tu familia y a quien te ayuda a cuidar. Cada quien ve lo que le toca. Se acabaron los mensajes de "¿ya le diste la pastilla?".</p></details>
+      <details><summary>¿Qué es la Comunidad de personas cuidadoras?</summary><p>Un chat de WhatsApp con personas que viven lo mismo que tú. Es gratis, está moderado y tiene reglas de respeto: nadie juzga, lo que se cuenta se queda ahí y no hay ventas.</p></details>
+      <details><summary>¿Qué hay en "Para ti"?</summary><p>Un respiro de 1 minuto que vibra al ritmo de tu respiración y 12 guías cortas para cuidarte a ti: dormir mejor, pedir ayuda sin culpa, manejar el enojo y reconocer cuándo necesitas apoyo.</p></details>
+      <details><summary>Si necesito un respiro, ¿puedo pedir que alguien me cubra?</summary><p>Sí. Desde Turnos pides un respiro, eliges de qué hora a qué hora y la app prepara un mensaje para tu familia. Tú decides a quién mandarlo.</p></details>
+      <details><summary>¿Cuánto cuesta?</summary><p>Lo básico y la comunidad son gratis siempre. El plan familiar tiene 14 días de prueba y después cuesta $899 MXN al año por familia (ahorras $289, como 3 meses gratis) o $99 MXN al mes. Te avisamos antes de que termine la prueba; si no te convence, no pagas nada.</p></details>
+      <details><summary>¿Sirve para cuidar a un bebé o a un niño?</summary><p>Sí. Aunque nació pensando en adultos mayores, sus medicinas, citas, turnos y gastos funcionan igual para organizar el cuidado de un bebé o de niñas y niños pequeños.</p></details>
+      <details><summary>¿Qué pasa si soy la única persona que cuida?</summary><p>Aby2 te sirve igual: ordena tu día y te da un espacio para ti. Y si algún día alguien más puede ayudar, le mandas una invitación y le compartes lo que necesita saber.</p></details>
+      <details><summary>¿Puedo cuidar a más de una persona?</summary><p>Sí. Puedes tener más de una familia en la app y pasar de una a otra.</p></details>
+      <details><summary>¿Tengo que pagar para entrar a la comunidad?</summary><p>No. La Comunidad de personas cuidadoras es gratis siempre, uses o no el plan familiar.</p></details>
+      <details><summary>¿Cómo me cuida la app a mí?</summary><p>Te pregunta cómo vas, te propone un respiro de 1 minuto cuando el día pesa y te da guías cortas para dormir mejor, pedir ayuda sin culpa y reconocer cuándo necesitas apoyo.</p></details>
+      <details><summary>¿Mis datos y los de la persona que cuido están protegidos?</summary><p>Sí. Solo las personas que tú invitas a la familia ven la información. No la vendemos ni la compartimos.</p></details>
+      <details><summary>¿La app da indicaciones médicas?</summary><p>No. Aby2 te ayuda a organizar el cuidado. Las medicinas y los tratamientos siempre los indica su médico.</p></details>
+    </div>
+  </div></section>
+</div>
+
+<!-- ============ SUGERENCIAS ============ -->
+<div class="view" id="v-sugerencias" hidden>
+  <section><div class="wrap split" style="align-items:start">
+    <div>
+      <p class="eyebrow">Sugerencias</p>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.6rem)">Tu idea puede ser la próxima mejora.</h1>
+      <p class="sub">Leemos cada mensaje. Cuéntanos qué te gustaría que hicieran 3Gly o Aby2, qué te costó trabajo o qué te encantó. También puedes dejar tu correo para unirte a la lista de espera.</p>
+      <p class="sub" style="margin-top:18px">Tu sugerencia llega a <b id="mailAddr" style="color:var(--ink)">alephsubcerohq@gmail.com</b> <button type="button" class="btn" id="copyMail" style="padding:6px 14px;font-size:.85rem;margin-left:6px">Copiar</button></p>
+    </div>
+    <div>
+      <form class="sug" id="sugForm">
+        <div class="chips" role="group" aria-label="App"><label><input type="radio" name="app" id="app-gly" value="3Gly" checked> 3Gly</label><label><input type="radio" name="app" id="app-aby" value="Aby2"> Aby2</label><label><input type="radio" name="app" id="app-aleph" value="General"> En general</label></div>
+        <label for="msg">Tu sugerencia<textarea id="msg" required placeholder="Me gustaría que la app…"></textarea></label>
+        <label for="mail">Tu correo (opcional, para avisarte y para la lista de espera)<input id="mail" type="email" placeholder="tucorreo@ejemplo.com"></label>
+        <button class="btn solid" type="submit" style="justify-self:start">Enviar sugerencia</button>
+        <p class="note" style="margin:0">Al enviar se abre tu correo con el mensaje listo para alephsubcerohq@gmail.com. Si no se abre, copia la dirección de arriba.</p>
+      </form>
+      <div class="thanks" id="thanks" hidden><h3>¡Gracias por tu idea!</h3><p class="sub">Si tu correo no se abrió, mándala a alephsubcerohq@gmail.com. La leemos con cuidado.</p></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ============ CUESTIONARIO ============ -->
+<div class="view" id="v-cuestionario" hidden>
+  <section><div class="wrap">
+    <p class="eyebrow">Cuestionario</p>
+    <h1 style="font-size:clamp(2.2rem,5vw,3.6rem)">Cuéntanos de ti. Te decimos cómo podemos ayudarte.</h1>
+    <p class="sub" style="margin-bottom:28px">Elige un cuestionario. Toma 2 minutos y al final te damos un resultado hecho para ti.</p>
+    <div class="tabs" role="tablist" id="quizTabs"><button role="tab" data-q="general" aria-selected="true">General</button><button role="tab" data-q="gly" aria-selected="false">3Gly</button><button role="tab" data-q="aby" aria-selected="false">Aby2</button></div>
+    <div class="quiz" id="quiz" aria-live="polite"></div>
+    <p class="note">Tus respuestas se quedan en tu pantalla. No las guardamos.</p>
+  </div></section>
+</div>
+
+</main>
+
+<footer><div class="wrap">
+  <div><p class="motto">Una regla chiquita. Todos los días.</p><div class="flink" style="margin-top:12px"><a href="#tres-gly">3Gly</a><a href="#aby2">Aby2</a><a href="#nosotros">Nosotros</a><a href="#cuestionario">Cuestionario</a><a href="#preguntas">Preguntas</a><a href="#sugerencias">Sugerencias</a><a href="/privacidad">Privacidad 3Gly</a><a href="/aby2/privacidad">Privacidad Aby2</a></div></div>
+  <div class="small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 962 220" role="img" aria-label="Aleph Subcero" class="logo"><polygon points="57.92,60.40 92.64,60.40 162.08,159.60 127.36,159.60" fill="#B5452F"/><path d="M127.36,60.40 L162.08,60.40 C157.12,75.28 143.48,90.16 126.12,97.60 C134.80,85.20 134.80,72.80 127.36,60.40 Z" fill="#B5452F"/><path d="M92.64,159.60 L57.92,159.60 C62.88,144.72 76.52,129.84 93.88,122.40 C85.20,134.80 85.20,147.20 92.64,159.60 Z" fill="#B5452F"/><path d="M189.336 162.56599999999997Q185.61 162.56599999999997 183.15300000000002 160.91899999999998Q180.696 159.272 179.292 156.545Q177.888 153.81799999999998 177.29399999999998 150.605Q176.7 147.392 176.7 144.26Q176.7 141.128 177.29399999999998 137.915Q177.888 134.702 179.292 131.975Q180.696 129.248 183.15300000000002 127.60099999999998Q185.61 125.95399999999998 189.336 125.95399999999998Q193.11599999999999 125.95399999999998 195.57299999999998 127.60099999999998Q198.03 129.248 199.434 131.975Q200.838 134.702 201.43200000000002 137.915Q202.026 141.128 202.026 144.26Q202.026 147.392 201.43200000000002 150.605Q200.838 153.81799999999998 199.434 156.545Q198.03 159.272 195.57299999999998 160.91899999999998Q193.11599999999999 162.56599999999997 189.336 162.56599999999997ZM189.336 160.56799999999998Q191.226 160.56799999999998 192.333 159.54199999999997Q193.44 158.516 194.007 156.464Q194.574 154.41199999999998 194.763 151.361Q194.952 148.30999999999997 194.952 144.26Q194.952 138.85999999999999 194.574 135.242Q194.196 131.624 193.00799999999998 129.78799999999998Q191.82 127.95199999999998 189.336 127.95199999999998Q186.906 127.95199999999998 185.71800000000002 129.78799999999998Q184.53 131.624 184.152 135.242Q183.774 138.85999999999999 183.774 144.26Q183.774 148.30999999999997 183.963 151.361Q184.152 154.41199999999998 184.719 156.464Q185.286 158.516 186.393 159.54199999999997Q187.5 160.56799999999998 189.336 160.56799999999998Z" fill="#B5452F"/><path d="M246.646 144.56 267.766 75.44H287.254L308.374 144.56H294.93399999999997L290.47 130.16H264.454L260.086 144.56ZM286.726 117.968 277.366 87.68 268.15 117.968ZM316.05400000000003 144.56V74.0H329.11V144.56ZM365.686 146.0Q357.718 146.0 351.646 142.56799999999998Q345.574 139.136 342.142 133.112Q338.71 127.088 338.71 119.312Q338.71 110.816 342.07 104.528Q345.43 98.24000000000001 351.334 94.76Q357.238 91.28 364.918 91.28Q373.078 91.28 378.78999999999996 95.12Q384.502 98.96000000000001 387.238 105.92Q389.974 112.88 389.158 122.288H352.774Q353.398 126.944 355.702 129.824Q358.822 133.808 364.918 133.808Q368.758 133.808 371.494 132.128Q374.23 130.448 375.67 127.28L388.726 131.024Q385.798 138.12800000000001 379.486 142.06400000000002Q373.174 146.0 365.686 146.0ZM375.958 112.592Q375.382 108.368 373.75 106.064Q371.206 102.608 365.494 102.608Q358.822 102.608 355.702 106.64Q353.878 108.992 353.11 112.592ZM423.478 146.0Q416.13399999999996 146.0 411.094 142.736V167.6H397.942V92.72H409.462V95.55199999999999Q409.894 95.21600000000001 410.37399999999997 94.88Q415.414 91.28 422.806 91.28Q430.246 91.28 435.76599999999996 94.832Q441.286 98.384 444.334 104.55199999999999Q447.382 110.72 447.382 118.64Q447.382 126.416 444.382 132.608Q441.382 138.8 436.006 142.4Q430.63 146.0 423.478 146.0ZM421.366 134.38400000000001Q425.59 134.38400000000001 428.278 132.272Q430.966 130.16 432.262 126.584Q433.558 123.00800000000001 433.558 118.64Q433.558 114.32 432.214 110.744Q430.87 107.168 428.062 105.03200000000001Q425.25399999999996 102.896 420.88599999999997 102.896Q416.806 102.896 414.28599999999994 104.864Q411.76599999999996 106.832 410.614 110.384Q409.462 113.936 409.462 118.64Q409.462 123.344 410.614 126.896Q411.76599999999996 130.448 414.38199999999995 132.416Q416.998 134.38400000000001 421.366 134.38400000000001ZM491.34999999999997 144.56V120.08Q491.34999999999997 118.304 491.15799999999996 115.54400000000001Q490.96599999999995 112.784 489.95799999999997 110.0Q488.95 107.21600000000001 486.66999999999996 105.34400000000001Q484.39 103.47200000000001 480.21399999999994 103.47200000000001Q478.534 103.47200000000001 476.614 104.0Q474.69399999999996 104.52799999999999 473.01399999999995 106.03999999999999Q471.33399999999995 107.55199999999999 470.25399999999996 110.47999999999999Q469.174 113.408 469.174 118.256V144.56H455.926V75.44H467.542V98.048Q469.318 96.03200000000001 471.71799999999996 94.49600000000001Q476.71 91.184 484.342 91.184Q490.438 91.184 494.27799999999996 93.248Q498.11799999999994 95.31200000000001 500.25399999999996 98.48Q502.39 101.648 503.30199999999996 105.08Q504.21399999999994 108.512 504.40599999999995 111.344Q504.59799999999996 114.176 504.59799999999996 115.47200000000001V144.56ZM558.55 146.0Q550.87 146.0 544.702 143.288Q538.534 140.576 534.574 135.512Q530.6139999999999 130.448 529.558 123.44L543.1899999999999 121.424Q544.63 127.376 549.142 130.59199999999998Q553.654 133.808 559.414 133.808Q562.63 133.808 565.654 132.8Q568.678 131.792 570.622 129.824Q572.5659999999999 127.856 572.5659999999999 124.976Q572.5659999999999 123.92 572.2539999999999 122.936Q571.942 121.952 571.222 121.088Q570.502 120.224 569.182 119.456Q567.862 118.688 565.846 118.064L547.894 112.784Q545.8779999999999 112.208 543.2139999999999 111.152Q540.55 110.096 538.054 108.128Q535.558 106.16 533.902 102.92Q532.246 99.68 532.246 94.736Q532.246 87.77600000000001 535.75 83.168Q539.2539999999999 78.56 545.1099999999999 76.304Q550.966 74.048 558.0699999999999 74.096Q565.222 74.19200000000001 570.838 76.54400000000001Q576.454 78.896 580.246 83.384Q584.038 87.872 585.718 94.352L571.606 96.75200000000001Q570.838 93.392 568.7739999999999 91.088Q566.7099999999999 88.78399999999999 563.8539999999999 87.584Q560.9979999999999 86.384 557.8779999999999 86.28800000000001Q554.8059999999999 86.19200000000001 552.0939999999999 87.128Q549.382 88.064 547.6779999999999 89.84Q545.9739999999999 91.616 545.9739999999999 94.064Q545.9739999999999 96.32 547.366 97.73599999999999Q548.7579999999999 99.152 550.8699999999999 100.01599999999999Q552.982 100.88 555.1899999999999 101.456L567.1899999999999 104.72Q569.8779999999999 105.44 573.1419999999999 106.616Q576.406 107.792 579.406 109.88Q582.406 111.968 584.3499999999999 115.376Q586.294 118.784 586.294 124.016Q586.294 129.584 583.9659999999999 133.736Q581.6379999999999 137.888 577.702 140.60000000000002Q573.766 143.312 568.798 144.656Q563.8299999999999 146.0 558.55 146.0ZM614.2299999999999 146.096Q608.1339999999999 146.096 604.2939999999999 144.03199999999998Q600.454 141.968 598.318 138.8Q596.1819999999999 135.632 595.27 132.2Q594.358 128.768 594.1659999999999 125.936Q593.9739999999999 123.104 593.9739999999999 121.808V92.72H607.222V117.2Q607.222 118.976 607.414 121.736Q607.606 124.49600000000001 608.614 127.28Q609.622 130.064 611.9019999999999 131.93599999999998Q614.1819999999999 133.808 618.358 133.808Q620.0379999999999 133.808 621.9579999999999 133.28Q623.8779999999999 132.752 625.558 131.24Q627.2379999999999 129.728 628.318 126.77600000000001Q629.3979999999999 123.824 629.3979999999999 119.024V92.72H642.55V144.56H631.03V139.232Q629.2539999999999 141.248 626.9019999999999 142.784Q621.862 146.096 614.2299999999999 146.096ZM679.5099999999999 146.0Q671.7819999999999 146.0 666.598 142.4Q666.0219999999999 142.016 665.4939999999999 141.584V144.56H653.9739999999999V75.44H667.1259999999999V94.4Q671.9739999999999 91.28 678.838 91.28Q686.2779999999999 91.28 691.7979999999999 94.832Q697.3179999999999 98.384 700.3659999999999 104.55199999999999Q703.4139999999999 110.72 703.4139999999999 118.64Q703.4139999999999 126.416 700.4139999999999 132.608Q697.4139999999999 138.8 692.0379999999999 142.4Q686.6619999999999 146.0 679.5099999999999 146.0ZM677.3979999999999 134.38400000000001Q681.622 134.38400000000001 684.31 132.272Q686.9979999999999 130.16 688.2939999999999 126.584Q689.5899999999999 123.00800000000001 689.5899999999999 118.64Q689.5899999999999 114.32 688.2459999999999 110.744Q686.9019999999999 107.168 684.0939999999999 105.03200000000001Q681.286 102.896 676.9179999999999 102.896Q672.838 102.896 670.318 104.864Q667.7979999999999 106.832 666.646 110.384Q665.4939999999999 113.936 665.4939999999999 118.64Q665.4939999999999 123.344 666.646 126.896Q667.7979999999999 130.448 670.4139999999999 132.416Q673.0299999999999 134.38400000000001 677.3979999999999 134.38400000000001ZM734.9019999999999 146.0Q726.838 146.0 721.078 142.4Q715.318 138.8 712.246 132.608Q709.174 126.416 709.174 118.64Q709.174 110.768 712.366 104.576Q715.558 98.384 721.366 94.832Q727.174 91.28 735.0939999999999 91.28Q744.262 91.28 750.478 95.912Q756.694 100.54400000000001 758.4219999999999 108.56L745.366 112.01599999999999Q744.2139999999999 107.98400000000001 741.358 105.72800000000001Q738.502 103.47200000000001 734.9019999999999 103.47200000000001Q730.774 103.47200000000001 728.134 105.464Q725.4939999999999 107.456 724.2459999999999 110.888Q722.9979999999999 114.32 722.9979999999999 118.64Q722.9979999999999 125.408 725.9979999999999 129.608Q728.9979999999999 133.808 734.9019999999999 133.808Q739.318 133.808 741.622 131.792Q743.9259999999999 129.776 745.078 126.03200000000001L758.4219999999999 128.816Q756.2139999999999 137.072 750.0699999999999 141.536Q743.9259999999999 146.0 734.9019999999999 146.0ZM790.198 146.0Q782.2299999999999 146.0 776.1579999999999 142.56799999999998Q770.0859999999999 139.136 766.654 133.112Q763.222 127.088 763.222 119.312Q763.222 110.816 766.5819999999999 104.528Q769.9419999999999 98.24000000000001 775.846 94.76Q781.75 91.28 789.43 91.28Q797.5899999999999 91.28 803.3019999999999 95.12Q809.0139999999999 98.96000000000001 811.75 105.92Q814.486 112.88 813.67 122.288H777.286Q777.91 126.944 780.2139999999999 129.824Q783.334 133.808 789.43 133.808Q793.27 133.808 796.006 132.128Q798.742 130.448 800.1819999999999 127.28L813.2379999999999 131.024Q810.31 138.12800000000001 803.9979999999999 142.06400000000002Q797.6859999999999 146.0 790.198 146.0ZM800.4699999999999 112.592Q799.894 108.368 798.262 106.064Q795.718 102.608 790.006 102.608Q783.334 102.608 780.2139999999999 106.64Q778.39 108.992 777.622 112.592ZM822.55 144.56V92.72H834.0699999999999V101.072Q834.694 99.92 835.5099999999999 98.864Q837.1899999999999 96.656 839.6379999999999 95.21600000000001Q841.5099999999999 94.064 843.7179999999998 93.416Q845.9259999999999 92.768 848.2779999999999 92.6Q850.6299999999999 92.432 852.982 92.72V104.912Q850.8219999999999 104.24000000000001 847.9659999999999 104.456Q845.1099999999999 104.672 842.8059999999999 105.77600000000001Q840.502 106.832 838.9179999999999 108.584Q837.334 110.336 836.5179999999999 112.71199999999999Q835.7019999999999 115.088 835.7019999999999 118.064V144.56ZM883.5099999999999 146.0Q875.6859999999999 146.0 869.7819999999999 142.49599999999998Q863.8779999999999 138.992 860.5899999999999 132.824Q857.3019999999999 126.656 857.3019999999999 118.64Q857.3019999999999 110.52799999999999 860.6619999999998 104.36Q864.0219999999998 98.19200000000001 869.9259999999999 94.736Q875.8299999999999 91.28 883.5099999999999 91.28Q891.3339999999998 91.28 897.2619999999998 94.784Q903.1899999999998 98.28800000000001 906.5019999999998 104.456Q909.8139999999999 110.624 909.8139999999999 118.64Q909.8139999999999 126.70400000000001 906.4779999999998 132.872Q903.1419999999998 139.04 897.2139999999998 142.51999999999998Q891.2859999999998 146.0 883.5099999999999 146.0ZM883.5099999999999 133.808Q889.7979999999999 133.808 892.8939999999999 129.56Q895.9899999999999 125.312 895.9899999999999 118.64Q895.9899999999999 111.72800000000001 892.8459999999999 107.60000000000001Q889.7019999999999 103.47200000000001 883.5099999999999 103.47200000000001Q879.2379999999998 103.47200000000001 876.5019999999998 105.39200000000001Q873.7659999999998 107.31200000000001 872.4459999999999 110.72Q871.1259999999999 114.128 871.1259999999999 118.64Q871.1259999999999 125.6 874.2699999999999 129.704Q877.4139999999999 133.808 883.5099999999999 133.808Z" fill="currentColor"/></svg><span>© 2026</span></div>
+</div></footer>
+
+<script>
+(function(){
+const views=['inicio','tres-gly','aby2','nosotros','cuestionario','preguntas','sugerencias'];
+const nav=document.getElementById('nav'),btn=document.getElementById('menuBtn');
+function show(){let full=(location.hash||'#inicio').slice(1),h=full.split('/')[0],sub=full.split('/')[1]||'privacidad';if(!views.includes(h))h='inicio';
+  const lv=document.getElementById('v-'+h);if(lv&&lv.classList.contains('legal-view')){lv.querySelectorAll('.ltabs button').forEach(x=>x.setAttribute('aria-selected',x.dataset.l===sub));lv.querySelectorAll('[data-p]').forEach(p=>p.hidden=p.dataset.p!==sub)}
+  views.forEach(v=>document.getElementById('v-'+v).hidden=v!==h);
+  nav.querySelectorAll('a').forEach(a=>a.toggleAttribute('aria-current',a.getAttribute('href')==='#'+h)||a.getAttribute('href')==='#'+h&&a.setAttribute('aria-current','page'));
+  nav.querySelectorAll('a').forEach(a=>{if(a.getAttribute('href')==='#'+h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  nav.classList.remove('open');btn.setAttribute('aria-expanded','false');
+  const tgt=full.includes('/')&&document.getElementById(h+'-'+full.split('/')[1]);if(tgt)requestAnimationFrame(()=>tgt.scrollIntoView({block:'start'}));else window.scrollTo(0,0)}
+const PLAY={'tres-gly':'','aby2':''}; // pega aquí el enlace de Google Play cuando cada app esté publicada
+document.querySelectorAll('.playbtn').forEach(a=>{const u=PLAY[a.dataset.play];if(u){a.href=u;a.removeAttribute('aria-disabled');a.querySelector('small').textContent='Descárgala en';a.target='_blank';a.rel='noopener'}});
+document.querySelectorAll('.waitlist').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const app=f.dataset.app,m=f.querySelector('input').value.trim();
+  const WL={'3Gly':'3gly.app@gmail.com','Aby2':'aby2.alephsubcero@gmail.com'};const l=document.createElement('a');l.href='mailto:'+WL[app]+'?subject='+encodeURIComponent('Lista de espera · '+app)+'&body='+encodeURIComponent('Quiero que me avisen cuando '+app+' esté en Google Play.\n\nMi correo: '+m);document.body.appendChild(l);l.click();l.remove();f.querySelector('.wl-ok').hidden=false}));
+document.querySelectorAll('.ltabs button').forEach(b=>b.onclick=()=>{location.hash=b.closest('.legal-view').id.slice(2)+'/'+b.dataset.l});
+addEventListener('hashchange',show);show();
+btn.addEventListener('click',()=>{const o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
+const tg=document.getElementById('t-gly'),ta=document.getElementById('t-aby'),fg=document.getElementById('f-gly'),fa=document.getElementById('f-aby');
+function tab(g){tg.setAttribute('aria-selected',g);ta.setAttribute('aria-selected',!g);fg.hidden=!g;fa.hidden=g}
+tg.onclick=()=>tab(true);ta.onclick=()=>tab(false);
+const MAIL='alephsubcerohq@gmail.com';
+document.getElementById('sugForm').addEventListener('submit',e=>{e.preventDefault();
+  const app=(document.querySelector('input[name=app]:checked')||{}).value||'General',msg=document.getElementById('msg').value,mail=document.getElementById('mail').value;
+  const href='mailto:'+MAIL+'?subject='+encodeURIComponent('Sugerencia · '+app)+'&body='+encodeURIComponent(msg+(mail?'\n\nMi correo: '+mail:''));
+  const a=document.createElement('a');a.href=href;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+  e.target.hidden=true;document.getElementById('thanks').hidden=false});
+document.getElementById('copyMail').addEventListener('click',ev=>{const b=ev.currentTarget;
+  const done=()=>{b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar',1600)};
+  try{navigator.clipboard.writeText(MAIL).then(done,()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('mailAddr'));getSelection().removeAllRanges();getSelection().addRange(r)})}catch(_){}} );
+const Q={
+general:[
+ {q:'¿Qué te gustaría resolver hoy?',t:'one',o:['Sostener hábitos para cuidar mi salud','Organizar el cuidado de alguien que depende de mí','Las dos cosas','Solo estoy conociendo']},
+ {q:'Cuando empiezas algo nuevo para cuidarte, ¿qué suele pasar?',t:'one',o:['Lo dejo a los pocos días','Me cuesta empezar','Lo sostengo bien','No aplica para mí']},
+ {q:'¿Qué te quita más energía en la semana?',t:'many',o:['El trabajo','Cuidar a alguien','Las comidas y la casa','No tener tiempo para mí']},
+ {q:'¿Cómo te gusta que te recuerden las cosas?',t:'one',o:['Una notificación suave','Una vibración en la mano','Un sonido corto','Prefiero acordarme yo']},
+ {q:'¿Qué haría que una app te encante?',t:'many',o:['Que sea fácil de usar','Que me entienda sin regañarme','Ver mi avance','Que me acompañe gente que vive lo mismo']},
+ {q:'¿En qué teléfono la usarías?',t:'one',o:['Android','iPhone']}
+],
+gly:[
+ {q:'Tu punto de partida: ¿conoces tu último nivel de triglicéridos?',t:'one',o:['Menos de 150 mg/dL','150 a 199 mg/dL','200 a 499 mg/dL','500 mg/dL o más','No lo sé todavía'],h:'Es solo para que veas tu avance. Solo tu médico interpreta tus análisis.'},
+ {q:'¿Qué te gustaría lograr con 3Gly?',t:'text',p:'Ej. Ser constante y mejorar mis triglicéridos'},
+ {q:'¿Por qué lo quieres lograr?',t:'text',p:'Ej. Para ver crecer a mis hijos'},
+ {q:'¿Qué te cuesta más sostener?',t:'many',o:['Comer mejor','Moverme','Tomar agua','Dejar el alcohol']},
+ {q:'¿Cuántas veces lo has intentado antes?',t:'one',o:['Es la primera vez','2 o 3 veces','Muchas veces, siempre lo dejo']},
+ {q:'¿Cuándo se te complica más?',t:'one',o:['Entre semana','Los fines de semana','En reuniones y fiestas','Cuando tengo estrés']},
+ {q:'Define tu ancla: eso que te devuelve tu porqué en tu peor día.',t:'text',p:'Ej. "Hey Jude" de los Beatles',h:'Puede ser una frase, una canción, una persona o una pulsera.'},
+ {q:'¿Cómo quieres celebrar tus logros?',t:'many',o:['Ver mi avance llenarse de color','Sentir una vibración','Escuchar un sonido corto','Leer una frase de ánimo']}
+],
+aby:[
+ {q:'¿A quién cuidas?',t:'one',o:['A un adulto mayor','A un bebé o a una niña o niño pequeño','A una persona con una enfermedad o discapacidad','A más de una persona']},
+ {q:'¿Cuántas horas al día le dedicas al cuidado?',t:'one',o:['Menos de 2','De 2 a 5','De 6 a 10','Más de 10']},
+ {q:'¿Con cuántas personas compartes el cuidado?',t:'one',o:['Con nadie, lo hago en soledad','Con 1 persona','Con 2 o 3 personas','Con más de 3']},
+ {q:'¿Qué te pesa más hoy?',t:'many',o:['Las medicinas y sus horarios','Las citas','Los gastos','Ponerme de acuerdo con la familia','Mi propio cansancio']},
+ {q:'¿Cuándo fue la última vez que tuviste un rato solo para ti?',t:'one',o:['Esta semana','Este mes','Hace meses','Ya no me acuerdo']},
+ {q:'¿Cómo estás durmiendo?',t:'one',o:['Bien','Me despierto varias veces','Casi no duermo']},
+ {q:'¿Te gustaría platicar con otras personas que cuidan?',t:'one',o:['Sí, me haría bien','Tal vez','Por ahora no']},
+ {q:'¿Qué te gustaría que tu familia supiera sin tener que repetirlo?',t:'text',p:'Ej. A qué hora toca cada medicina'}
+]};
+let cur='general',i=0,A={};
+const box=document.getElementById('quiz');
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){const L=Q[cur];
+ if(i>=L.length)return result();
+ const it=L[i],a=A[i];
+ let h=`<div class="qbar"><i style="width:${(i/L.length)*100}%"></i></div><p class="qcount">Pregunta ${i+1} de ${L.length}${it.t==='many'?' · puedes elegir varias':''}</p><p class="qtext">${it.q}</p>`;
+ if(it.t==='text')h+=`<label for="qin" style="font-weight:600">Tu respuesta<input id="qin" value="${esc(a||'')}" placeholder="${esc(it.p)}"></label>`;
+ else h+='<div class="opts">'+it.o.map((o,k)=>`<button type="button" class="opt" data-k="${k}" aria-pressed="${it.t==='many'?!!(a&&a.includes(k)):a===k}">${o}</button>`).join('')+'</div>';
+ if(it.h)h+=`<p class="qhint">${it.h}</p>`;
+ h+=`<div class="qnav"><button type="button" class="btn" id="qback" ${i?'':'disabled style="opacity:.4"'}>Atrás</button><button type="button" class="btn solid" id="qnext">${i===L.length-1?'Ver mi resultado':'Siguiente'}</button></div>`;
+ box.innerHTML=h;
+ box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;
+   if(it.t==='many'){const s=new Set(A[i]||[]);s.has(k)?s.delete(k):s.add(k);A[i]=[...s]}else{A[i]=k;i++;render();return}
+   b.setAttribute('aria-pressed',A[i].includes(k))});
+ const inp=document.getElementById('qin');if(inp)inp.oninput=()=>A[i]=inp.value;
+ document.getElementById('qback').onclick=()=>{if(i){i--;render()}};
+ document.getElementById('qnext').onclick=()=>{i++;render()};
+}
+const meter=(app,pts,max,txt,grad)=>{const p=Math.round(pts/max*100),lv=p>=60?'Mucho':p>=30?'Bastante':'Un poco';
+ return `<div class="meter"><small style="font-weight:800;letter-spacing:.08em">TU MEDIDOR</small><br><b>Qué tanto te ayudaría ${app}: ${lv}</b><div class="bar" role="img" aria-label="${p} de 100"><i style="width:${Math.max(p,8)}%;background:${grad}"></i></div><p>${txt[lv]}</p><p class="qhint" style="margin-top:8px">Es una autoevaluación de la app, no un diagnóstico médico.</p></div>`};
+const pick=(k,n)=>(A[n]||[]).map(x=>Q[k][n].o[x]);
+function result(){let h='';
+ if(cur==='general'){const r=A[0];
+  const rec=r===0?'gly':r===1?'aby':r===2?'both':'none';
+  h=`<div class="result"><p class="eyebrow">Tu resultado</p><h3>${rec==='gly'?'3Gly es para ti.':rec==='aby'?'Aby2 es para ti.':rec==='both'?'Te ayudan las dos.':'Bienvenida, bienvenido.'}</h3>
+  <p class="sub">${rec==='gly'?'Te acompaña a sostener tus hábitos, sobre todo los días en que no tienes ganas.':rec==='aby'?'Ordena el cuidado, lo reparte con tu familia y te da un espacio para ti.':rec==='both'?'3Gly para tus hábitos y Aby2 para el cuidado de quien depende de ti.':'Date una vuelta por 3Gly y Aby2 y quédate con la que te hable.'}</p>
+  <ul>${A[3]!=null&&A[3]<3?`<li>Activaremos ${['notificaciones suaves','vibraciones','sonidos cortos'][A[3]]} para tus recordatorios.</li>`:'<li>Puedes apagar todos los recordatorios cuando quieras.</li>'}${pick('general',4).map(x=>`<li>Te importa ${x.toLowerCase().replace(/\bme\b/g,'te').replace('regañarme','regañarte').replace(/\bmi\b/g,'tu')}. Así están pensadas.</li>`).join('')}${A[5]===1?'<li>Primero salimos en Android; te avisamos cuando llegue a iPhone.</li>':''}</ul>
+  <div class="btns" style="margin-top:20px">${rec!=='aby'?'<a class="btn solid" href="#tres-gly">Conoce 3Gly</a>':''}${rec!=='gly'?'<a class="btn" href="#aby2">Conoce Aby2</a>':''}</div></div>`}
+ if(cur==='gly'){const meta=A[1]||'Ser constante',por=A[2]||'',ancla=A[6]||'Tu porqué';const hard=pick('gly',3);
+  h=`<div class="result gly"><p class="eyebrow" style="color:var(--gly-jade)">Tu primera semana con 3Gly</p><h3>Esto es lo que te va a sostener.</h3>
+  ${meter('3Gly',([0,1,2,3,1][A[0]]??0)+Math.min((A[3]||[]).length,3)+([0,1,2][A[4]]??0)+(A[5]!=null?1:0),9,{'Mucho':'Tienes una meta clara y lo que más te cuesta es sostenerla. Justo para eso existe 3Gly.','Bastante':'3Gly te ayuda a que lo que ya sabes hacer se vuelva rutina.','Un poco':'Vas bien. 3Gly te sirve para no soltar en los días difíciles.'},'linear-gradient(90deg,#5FD3A5,#1C9E6E)')}
+  <div class="ancla-card"><small>TU ANCLA</small><p>${esc(ancla)}</p></div>
+  <ul><li>Tu meta: ${esc(meta)}${por?'. Tu porqué: '+esc(por):''}.</li>
+  <li>Empieza por ${hard.length?hard[0].toLowerCase():'un hábito a la vez'}: un registro al día, nada más.</li>
+  ${A[4]===2?'<li>Ya lo intentaste antes. Esta vez no dependes de la fuerza de voluntad: tu ancla te regresa cuando lo sueltes.</li>':''}
+  ${A[5]!=null?`<li>${['Entre semana','Los fines de semana','En reuniones y fiestas','Cuando tienes estrés'][A[5]]} te mandaremos un recordatorio extra, sin regaños.</li>`:''}
+  ${pick('gly',7).length?`<li>Celebraremos así: ${pick('gly',7).join(', ').toLowerCase().replace(/\bmi\b/g,'tu')}.</li>`:''}
+  ${A[0]>=2&&A[0]<=3?'<li>Comenta tu nivel con tu médico; 3Gly te acompaña en los hábitos que acuerden.</li>':''}</ul>
+  <div class="btns" style="margin-top:20px"><a class="btn solid" href="#tres-gly/descargar">Quiero mis 7 días gratis</a><a class="btn" href="#tres-gly/precios">Ver precios</a></div></div>`}
+ if(cur==='aby'){const heavy=pick('aby',3),tips=[];
+  const map={'Las medicinas y sus horarios':'Medicinas: quién dio qué y a qué hora, a la vista de toda la familia.','Las citas':'Citas: hora, lugar y quién acompaña, sin perder papelitos.','Los gastos':'Gastos: quién pagó qué, claro y sin discusiones.','Ponerme de acuerdo con la familia':'Turnos: cada quien sabe qué día le toca.','Mi propio cansancio':'Para ti: un respiro de 1 minuto que vibra al ritmo de tu respiración.'};
+  heavy.forEach(x=>tips.push(map[x]));
+  if(A[2]===0)tips.push('Cuidas en soledad. Invita a alguien aunque sea para un día. También entra a la Comunidad de personas cuidadoras.');
+  if(A[4]>=2||A[5]>=1)tips.push('Tu descanso importa: las guías "Dormir mejor aunque te despierten" y "Pedir ayuda sin culpa" son para ti.');
+  if(A[6]===0)tips.push('La Comunidad de personas cuidadoras te espera, gratis siempre.');
+  if(A[0]===1)tips.push('Aby2 funciona igual para organizar el cuidado de un bebé o de niñas y niños pequeños.');
+  h=`<div class="result aby"><p class="eyebrow" style="color:var(--aby-l)">Tu plan con Aby2</p><h3>Tú cuidas a todos. Esto es para cuidarte a ti.</h3>
+  ${meter('Aby2',(A[1]??0)+([3,2,1,0][A[2]]??0)+Math.min((A[3]||[]).length,3)+(A[4]??0)+(A[5]??0),14,{'Mucho':'Llevas una carga muy pesada. Aby2 está hecha justo para quitarte parte de ella.','Bastante':'El cuidado ya te pide mucho. Aby2 te ayuda a ordenarlo y repartirlo.','Un poco':'Hoy lo llevas bien. Aby2 te ayuda a que siga así cuando el día se complique.'},'linear-gradient(90deg,#96C7B3,#F9B95C,#D7897F)')}
+  ${A[1]>=2?'<p style="margin:0">Le dedicas muchas horas al día al cuidado. Mereces que esa carga se reparta.</p>':''}
+  <ul>${(tips.length?tips:['Empieza con lo básico, gratis siempre: medicinas, citas y la comunidad.']).map(x=>`<li>${x}</li>`).join('')}</ul>
+  ${A[7]?`<div class="ancla-card" style="background:#E7F3EE;color:var(--aby-fg)"><small style="color:var(--aby-l)">LO QUE TU FAMILIA VERÁ EN LA APP</small><p>${esc(A[7])}</p></div>`:''}
+  <div class="btns" style="margin-top:20px"><a class="btn solid" href="#aby2/descargar">Quiero probar Aby2</a><a class="btn" href="#aby2/precios">Ver precios</a></div></div>`}
+ h+='<div class="qnav"><button type="button" class="btn" id="qagain">Volver a empezar</button></div>';
+ box.innerHTML=h;document.getElementById('qagain').onclick=()=>{A={};i=0;render()}}
+document.querySelectorAll('#quizTabs button').forEach(b=>b.onclick=()=>{cur=b.dataset.q;A={};i=0;document.querySelectorAll('#quizTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));render()});
+render();
+
+const qh=()=>{const p=location.hash.split('/');if(p[0]==='#cuestionario'&&Q[p[1]]&&cur!==p[1]){const b=document.querySelector('#quizTabs button[data-q="'+p[1]+'"]');if(b)b.click()}};
+addEventListener('hashchange',qh);qh();
+
+})();
+</script>
+
 </body>
 </html>
