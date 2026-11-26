@@ -391,10 +391,10 @@ body{margin:0;background:var(--bg)}
         <div class="btns" style="margin-top:20px"><a class="playbtn" data-play="tres-gly" href="#tres-gly/descargar" aria-disabled="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8.9.6L20.4 12.9c.5-.3.5-.9 0-1.2L4.9 2.2c-.4-.2-.9.1-.9.6z" fill="currentColor"/></svg><span><small>Próximamente en</small>Google Play</span></a></div>
       </div>
       <form class="waitlist" data-app="3Gly">
-        <label for="wl-tres-gly"><b>Avísame cuando salga</b><span>Te escribimos el día del lanzamiento. Nada más.</span></label>
+        <label for="wl-tres-gly"><b>Avísame cuando salga</b><span>Te escribimos el día del lanzamiento. Nada de spam.</span></label>
         <input id="wl-tres-gly" type="email" required placeholder="tucorreo@ejemplo.com" autocomplete="email">
         <button class="btn solid" type="submit">Quiero que me avisen</button>
-        <p class="wl-ok" hidden>¡Listo! Se abrió tu correo con el mensaje para unirte a la lista. Envíalo y te avisamos.</p>
+        <p class="wl-ok" role="status" hidden></p>
       </form>
     </div>
   </div></section>
@@ -470,10 +470,10 @@ body{margin:0;background:var(--bg)}
         <div class="btns" style="margin-top:20px"><a class="playbtn" data-play="aby2" href="#aby2/descargar" aria-disabled="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8.9.6L20.4 12.9c.5-.3.5-.9 0-1.2L4.9 2.2c-.4-.2-.9.1-.9.6z" fill="currentColor"/></svg><span><small>Próximamente en</small>Google Play</span></a></div>
       </div>
       <form class="waitlist" data-app="Aby2">
-        <label for="wl-aby2"><b>Avísame cuando salga</b><span>Te escribimos el día del lanzamiento. Nada más.</span></label>
+        <label for="wl-aby2"><b>Avísame cuando salga</b><span>Te escribimos el día del lanzamiento. Nada de spam.</span></label>
         <input id="wl-aby2" type="email" required placeholder="tucorreo@ejemplo.com" autocomplete="email">
         <button class="btn solid" type="submit">Quiero que me avisen</button>
-        <p class="wl-ok" hidden>¡Listo! Se abrió tu correo con el mensaje para unirte a la lista. Envíalo y te avisamos.</p>
+        <p class="wl-ok" role="status" hidden></p>
       </form>
     </div>
   </div></section>
@@ -613,8 +613,17 @@ function show(){let full=(location.hash||'#inicio').slice(1),h=full.split('/')[0
   const tgt=full.includes('/')&&document.getElementById(h+'-'+full.split('/')[1]);if(tgt)requestAnimationFrame(()=>tgt.scrollIntoView({block:'start'}));else window.scrollTo(0,0)}
 const PLAY={'tres-gly':'','aby2':''}; // pega aquí el enlace de Google Play cuando cada app esté publicada
 document.querySelectorAll('.playbtn').forEach(a=>{const u=PLAY[a.dataset.play];if(u){a.href=u;a.removeAttribute('aria-disabled');a.querySelector('small').textContent='Descárgala en';a.target='_blank';a.rel='noopener'}});
-document.querySelectorAll('.waitlist').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const app=f.dataset.app,m=f.querySelector('input').value.trim();
-  const WL={'3Gly':'3gly.app@gmail.com','Aby2':'aby2.alephsubcero@gmail.com'};const l=document.createElement('a');l.href='mailto:'+WL[app]+'?subject='+encodeURIComponent('Lista de espera · '+app)+'&body='+encodeURIComponent('Quiero que me avisen cuando '+app+' esté en Google Play.\n\nMi correo: '+m);document.body.appendChild(l);l.click();l.remove();f.querySelector('.wl-ok').hidden=false}));
+// Lista de espera: se guarda en MailerLite (un formulario por app). Si falla la conexión, abre el correo de la app.
+const ML={'3Gly':'https://assets.mailerlite.com/jsonp/2825876/forms/205176932361307295/subscribe','Aby2':'https://assets.mailerlite.com/jsonp/2825876/forms/205177494450472448/subscribe'};
+const WL={'3Gly':'3gly.app@gmail.com','Aby2':'aby2.alephsubcero@gmail.com'};
+document.querySelectorAll('.waitlist').forEach(f=>f.addEventListener('submit',async e=>{e.preventDefault();const app=f.dataset.app,m=f.querySelector('input').value.trim(),btn=f.querySelector('button'),ok=f.querySelector('.wl-ok');
+  const mail=()=>{const l=document.createElement('a');l.href='mailto:'+WL[app]+'?subject='+encodeURIComponent('Lista de espera · '+app)+'&body='+encodeURIComponent('Quiero que me avisen cuando '+app+' esté en Google Play.\n\nMi correo: '+m);document.body.appendChild(l);l.click();l.remove();ok.textContent='Se abrió tu correo con el mensaje listo. Envíalo y te avisamos.';ok.hidden=false};
+  if(!ML[app]||ML[app].indexOf('https')!==0)return mail();
+  btn.disabled=true;btn.textContent='Guardando…';
+  try{const d=new FormData();d.append('fields[email]',m);d.append('ml-submit','1');d.append('anticsrf','true');
+    await fetch(ML[app],{method:'POST',body:d,mode:'no-cors'});
+    f.querySelector('input').value='';ok.textContent='¡Listo! Te avisamos el día que '+app+' llegue a Google Play.';ok.hidden=false;btn.textContent='¡Apuntado!'}
+  catch(err){btn.disabled=false;btn.textContent='Quiero que me avisen';mail()}}));
 document.querySelectorAll('.ltabs button').forEach(b=>b.onclick=()=>{location.hash=b.closest('.legal-view').id.slice(2)+'/'+b.dataset.l});
 addEventListener('hashchange',show);show();
 btn.addEventListener('click',()=>{const o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
